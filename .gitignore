@@ -14,3 +14,4 @@ db.sqlite3
 .tox/
 .nox/
 .hypothesis/
+media/
