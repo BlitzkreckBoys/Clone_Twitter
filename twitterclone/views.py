@@ -82,24 +82,36 @@ def followers_list(request):
     else:
         messages.success(request, "You must be logged in to view this page.")
         return redirect('login')
-def follow_profile(request,pk):
+def follow_profile(request, pk):
     if request.user.is_authenticated:
-        profile = get_object_or_404(Profile, pk=pk)
+        profile_to_follow = get_object_or_404(Profile, pk=pk)
         if request.method == "POST":
-            current_user_profile = request.user.profile
-            actiont = request.POST['follow']
-            if actiont == 'follow':
-                current_user_profile.follows.add(profile)
-            elif actiont == 'unfollow':
-                current_user_profile.follows.remove(profile)
-            # current_user_profile.save()
-            return redirect('profile', pk=pk)
-        else:
-            return render(request, 'profile.html', {'profile': profile})
+            action = request.POST.get('follow', '')
+            if action == 'follow':
+                request.user.profile.follows.add(profile_to_follow)
+                messages.success(request, 'You are now following this user.')
+            elif action == 'unfollow':
+                request.user.profile.follows.remove(profile_to_follow)
+                messages.success(request, 'You have unfollowed this user.')
+            else:
+                messages.error(request, 'Invalid action.')
+        return redirect('profile', user_id=pk)
+    else:
+        return redirect('login')
 def explore_profile(request):
     if request.user.is_authenticated:
-        profiles = Profile.objects.all()
-        return render(request, 'profile_list.html', {
+        search_query = request.GET.get('q', '')  # Get the search query from the GET request
+
+        if search_query:
+            # Filter profiles based on search query
+            profiles = Profile.objects.filter(
+                user__username__icontains=search_query
+            )
+        else:
+            # Retrieve all profiles if no search query is provided
+            profiles = Profile.objects.all()
+
+        return render(request, 'explore.html', {
             'title': 'Explore',
             'users': profiles
         })

@@ -1,11 +1,99 @@
 {% extends "base.html" %}
+{% load static %}
 {% block content %}
-<nav class="navbar bg-body-tertiary">
-    <div class="container-fluid">
-      <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
-    </div>
-  </nav>
+
+<style>
+    .profile-img {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-left: -10px;
+        margin-right: 10px;
+    }
+
+    .profile-card {
+        position: relative;
+        display: flex;
+        padding: 2rem;
+        margin-bottom: 1rem;
+    }
+
+    .profile-img-container {
+        flex-shrink: 0;
+        margin-left: -10px;
+    }
+
+    .profile-details {
+        flex-grow: 1;
+    }
+
+    .follow-button {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 0.75em;
+        color: #007bff;
+        cursor: pointer;
+        border: none;
+        background: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .profile-info {
+        display: flex;
+        align-items: center;
+    }
+</style>
+
+<div class="container">
+    <h1 class="text-center mb-4">{{ title }}</h1>
+
+    {% if users %}
+        <div class="row">
+            {% for profile in users %}
+            <div class="col-md-6">
+                <div class="card profile-card">
+                    <div class="profile-info">
+                        <div class="profile-img-container">
+                            {% if profile.profile_picture %}
+                                <img src="{{ profile.profile_picture.url }}" alt="{{ profile.user.username }}'s profile picture" class="profile-img">
+                            {% else %}
+                                <img src="{% static 'static/images/default_profile_picture.jpg' %}" alt="Default profile picture" class="profile-img">
+                            {% endif %}
+                        </div>
+                        <div class="profile-details">
+                            <h5 class="card-title" style="font-size: 1.25rem; margin: 0;">
+                                <a href="{% url 'profile' profile.user.id %}" style="text-decoration: none; color: inherit;">
+                                    {{ profile.user.username }}
+                                </a>
+                            </h5>
+                        </div>
+                    </div>
+
+                    {% if user.is_authenticated %}
+                        <form method="post" action="{% url 'follow_profile' profile.pk %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="follow" value="{% if profile in user.profile.follows.all %}unfollow{% else %}follow{% endif %}">
+                            <button type="submit" class="follow-button">
+                                {% if profile in user.profile.follows.all %}
+                                    -Unfollow
+                                {% else %}
+                                    +Follow
+                                {% endif %}
+                            </button>
+                        </form>
+                    {% else %}
+                        <p><a href="{% url 'login' %}">Login to follow users</a></p>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-center">No profiles to display.</p>
+    {% endif %}
+</div>
+
 {% endblock %}

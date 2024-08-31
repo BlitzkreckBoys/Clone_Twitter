@@ -28,9 +28,6 @@
     }
 
     .follow-button {
-        position: absolute;
-        top: 10px;
-        right: 10px;
         font-size: 0.75em;
         color: #007bff;
         cursor: pointer;
@@ -68,11 +65,11 @@
                     </div>
 
                     {% if user.is_authenticated %}
-                        <form method="POST" action="{% url 'follow_profile' profile.user.id %}">
+                        <form method="post" action="{% url 'follow_profile' profile.pk %}">
                             {% csrf_token %}
-                            <input type="hidden" name="user_id" value="{{ profile.user.id }}">
+                            <input type="hidden" name="follow" value="{% if profile in user.profile.follows.all %}unfollow{% else %}follow{% endif %}">
                             <button type="submit" class="follow-button btn btn-link p-0">
-                                {% if profile in request.user.profile.follows.all %}
+                                {% if profile in user.profile.follows.all %}
                                     -Unfollow
                                 {% else %}
                                     +Follow

@@ -18,7 +18,9 @@ def create_or_update_profile(sender, instance, created, **kwargs):
     """Create or update a Profile when a User is created or updated"""
     profile, created = Profile.objects.get_or_create(user=instance)
     if created:
-        print(f"Profile created successfully for user: {instance.username}")
+        # Automatically follow itself
+        profile.follows.add(profile)
+        print(f"Profile created and self-followed successfully for user: {instance.username}")
     else:
         print(f"Profile retrieved for user: {instance.username}")
 class Tweet(models.Model):

@@ -11,6 +11,7 @@ urlpatterns = [
     path('following/', views.following_list, name='following_list'),
     path('followers/', views.followers_list, name='followers_list'),
     path('follow_profile/<int:pk>/', views.follow_profile, name='follow_profile'),
+    path('explore/', views.explore_profile, name='explore_profile'),
     path('auth/', include('authentication.urls')),
     path('register/', include('registration.urls')),
 ]
