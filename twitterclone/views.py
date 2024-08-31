@@ -7,7 +7,9 @@ from .models import Profile, Tweet
 from .forms import ProfileForm, UserForm, TweetForm
 
 class HomeView(View):
+    """ Home view for the profile"""
     def get(self, request, *args, **kwargs):
+        """ for the profile view """
         if request.user.is_authenticated:
             tweet_form = TweetForm()
             tweets = Tweet.objects.filter(
@@ -22,8 +24,19 @@ class HomeView(View):
                 'tweets': tweets,
             })
         return redirect('login')
+    def post(self, request, *args, **kwargs):
+        """ Handle tweet submission """
+        if request.user.is_authenticated:
+            tweet_form = TweetForm(request.POST, request.FILES)
+            if tweet_form.is_valid():
+                tweet = tweet_form.save(commit=False)
+                tweet.user = request.user
+                tweet.save()
+                return redirect('home')
+        return redirect('login')
 
 class ProfileView(DetailView):
+    """Profile view for a specific user"""
     model = Profile
     template_name = 'profile.html'
     context_object_name = 'profile'
@@ -38,6 +51,7 @@ class ProfileView(DetailView):
         return profile
 
 class EditProfileView(UpdateView):
+    """Edit profile view for the current user"""
     model = Profile
     form_class = ProfileForm
     template_name = 'edit_profile.html'
@@ -53,6 +67,7 @@ class EditProfileView(UpdateView):
         return super().form_valid(form)
 
 class FollowingListView(ListView):
+    """"List of users"""
     model = Profile
     template_name = 'profile_list.html'
     context_object_name = 'users'
@@ -62,6 +77,7 @@ class FollowingListView(ListView):
         return profile.follows.all()
 
 class FollowersListView(ListView):
+    """List of users"""
     model = Profile
     template_name = 'profile_list.html'
     context_object_name = 'users'
@@ -71,7 +87,9 @@ class FollowersListView(ListView):
         return Profile.objects.filter(follows=user_profile)
 
 class FollowProfileView(View):
+    """Follow or unfollow a user"""
     def post(self, request, *args, **kwargs):
+        """for follow and unfollow """
         if request.user.is_authenticated:
             profile_to_follow = get_object_or_404(Profile, pk=kwargs['pk'])
             action = request.POST.get('follow', '')
@@ -87,6 +105,7 @@ class FollowProfileView(View):
         return redirect('login')
 
 class ExploreProfileView(ListView):
+    """Explore users based on search query"""
     model = Profile
     template_name = 'explore.html'
     context_object_name = 'users'

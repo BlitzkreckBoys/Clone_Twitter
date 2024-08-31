@@ -1,7 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
 from .models import Profile,Tweet
-
 class ProfileForm(forms.ModelForm):
     """Form for editing user profile information"""
     class Meta:
@@ -17,6 +16,7 @@ class UserForm(forms.ModelForm):
 class TweetForm(forms.ModelForm):
     """Form for creating a new tweet"""
     class Meta:
+        """model for tweet"""
         model = Tweet
         fields = ['content']
         widgets = {
