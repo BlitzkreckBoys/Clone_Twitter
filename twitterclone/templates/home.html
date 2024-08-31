@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load static %} <!-- Load static files -->
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center mt-3">
+        <div class="col-auto">
+            <a class="nav-link active text-center" aria-current="page" href="{% url 'following_list' %}" style="text-decoration: none; color: inherit;">
+                FOLLOWING
+            </a>
+        </div>
+        <div class="col-auto">
+            <a class="nav-link active text-center" aria-current="page" href="{% url 'followers_list' %}" style="text-decoration: none; color: inherit;">
+                FOLLOWERS
+            </a>
+        </div>
+        
+        {% if user.is_authenticated %}
+            <a href="{% url 'logout' %}" class='btn btn-secondary'>Logout</a>
+        {% else %}
+            <a href="{% url 'login' %}" class='btn btn-secondary'>Login</a>
+            <a href="{% url 'register' %}" class='btn btn-secondary'>Register</a>
+        {% endif %}
+    </div>
+
+    <!-- Display the tweet form if the user is authenticated -->
+    {% if user.is_authenticated %}
+        <div class="mt-4">
+            <h2>Create a New Tweet</h2>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ tweet_form.as_p }}
+                <button type="submit" class="btn btn-primary">Tweet</button>
+            </form>
+        </div>
+    {% endif %}
+
+    <!-- Display tweets -->
+    <div class="mt-4">
+        <h2>All Tweets</h2>
+        {% if tweets %}
+            <ul class="list-unstyled">
+                {% for tweet in tweets %}
+                    <li class="media mb-3">
+                        {% if tweet.user.profile.profile_picture %}
+                            <img src="{{ tweet.user.profile.profile_picture.url }}" alt="{{ tweet.user.username }}'s profile picture" class="mr-3" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover;">
+                        {% else %}
+                            <img src="{% static 'default_profile_picture.jpg' %}" alt="Default profile picture" class="mr-3" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover;">
+                        {% endif %}
+                        <div class="media-body">
+                            <h5 class="mt-0 mb-1">
+                                <a href="{% url 'profile' tweet.user.id %}" style="text-decoration: none; color: inherit;">
+                                    {{ tweet.user.username }}
+                                </a>
+                            </h5>
+                            {{ tweet.content }}
+                            <p class="text-muted">{{ tweet.created_at }}</p>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No tweets to display.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
