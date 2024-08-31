@@ -1,91 +1,79 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.http import Http404
+from django.urls import reverse_lazy
+from django.views.generic import View, UpdateView, DetailView, ListView
 from django.contrib import messages
-from django.contrib.auth.models import User
+from .models import Profile, Tweet
 from .forms import ProfileForm, UserForm, TweetForm
-from .models import Profile,Tweet
 
-def home(request):
-    """ Return the home page and tweets for the current user"""
-    if request.user.is_authenticated:
-        # Handle the tweet form submission
-        if request.method == "POST":
-            tweet_form = TweetForm(request.POST)
-            if tweet_form.is_valid():
-                tweet = tweet_form.save(commit=False)
-                tweet.user = request.user
-                tweet.save()
-                messages.success(request, 'Tweet posted successfully.')
-            else:
-                messages.error(request, 'Error posting tweet.')
+class HomeView(View):
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            tweet_form = TweetForm()
+            tweets = Tweet.objects.filter(
+                user__in=request.user.profile.follows.values_list('id', flat=True)
+            ).order_by('-created_at')
+            user_tweets = Tweet.objects.filter(user=request.user)
+            tweets = tweets | user_tweets
+            tweets = tweets.order_by('-created_at')
 
-        # Initialize the tweet form
-        tweet_form = TweetForm()
-
-        # Get the user's tweets and tweets from followed users
-        tweets = Tweet.objects.filter(
-            user__in=request.user.profile.follows.values_list('id', flat=True)
-        ).order_by('-created_at')
-
-        # Include the user's own tweets
-        user_tweets = Tweet.objects.filter(user=request.user)
-        tweets = tweets | user_tweets
-        tweets = tweets.order_by('-created_at')
-
-        return render(request, 'home.html', {
-            'tweet_form': tweet_form,
-            'tweets': tweets,
-        })
-    else:
+            return render(request, 'home.html', {
+                'tweet_form': tweet_form,
+                'tweets': tweets,
+            })
         return redirect('login')
 
-            
-    # If the user is not authenticated, just show the title
-def profile(request, user_id):
-    user = get_object_or_404(User, id=user_id)
-    user_profile = get_object_or_404(Profile, user=user)
-    return render(request, 'profile.html', {'profile': user_profile})
-def edit_profile(request):
-    profile = get_object_or_404(Profile, user=request.user) 
-    if request.method == 'POST':
-        profile_form = ProfileForm(request.POST, files=request.FILES, instance=profile)
-        user_form = UserForm(request.POST, instance=request.user)   
-        if profile_form.is_valid() and user_form.is_valid():
-            profile_form.save()
+class ProfileView(DetailView):
+    model = Profile
+    template_name = 'profile.html'
+    context_object_name = 'profile'
+    pk_url_kwarg = 'pk'  # Matches the 'pk' in the URL pattern
+
+    def get_object(self, queryset=None):
+        user_id = self.kwargs.get('pk')
+        try:
+            profile = Profile.objects.get(user__id=user_id)
+        except Profile.DoesNotExist:
+            raise Http404("Profile does not exist")
+        return profile
+
+class EditProfileView(UpdateView):
+    model = Profile
+    form_class = ProfileForm
+    template_name = 'edit_profile.html'
+    success_url = reverse_lazy('profile')
+
+    def get_object(self, queryset=None):
+        return get_object_or_404(Profile, user=self.request.user)
+
+    def form_valid(self, form):
+        user_form = UserForm(self.request.POST, instance=self.request.user)
+        if user_form.is_valid():
             user_form.save()
-            # Redirect to the profile page using the user's id
-            return redirect('profile', user_id=request.user.id)
-    else:
-        profile_form = ProfileForm(instance=profile)
-        user_form = UserForm(instance=request.user)
-    return render(request, 'edit_profile.html', {
-        'profile_form': profile_form,
-        'user_form': user_form
-    })
-def following_list(request):
-    if request.user.is_authenticated:
-        profile = get_object_or_404(Profile, user=request.user)
-        following_profiles = profile.follows.all()
-        return render(request, 'profile_list.html', {
-            'title': 'Following',
-            'users': following_profiles
-        })    
-    else:
-        return redirect('login')
-def followers_list(request):
-    if request.user.is_authenticated:
-        user_profile = request.user.profile
-        followers_profiles = Profile.objects.filter(follows=user_profile)
-        return render(request, 'profile_list.html', {
-            'title': 'Followers',
-            'users': followers_profiles  # Passing profiles to the template
-        })
-    else:
-        messages.success(request, "You must be logged in to view this page.")
-        return redirect('login')
-def follow_profile(request, pk):
-    if request.user.is_authenticated:
-        profile_to_follow = get_object_or_404(Profile, pk=pk)
-        if request.method == "POST":
+        return super().form_valid(form)
+
+class FollowingListView(ListView):
+    model = Profile
+    template_name = 'profile_list.html'
+    context_object_name = 'users'
+
+    def get_queryset(self):
+        profile = get_object_or_404(Profile, user=self.request.user)
+        return profile.follows.all()
+
+class FollowersListView(ListView):
+    model = Profile
+    template_name = 'profile_list.html'
+    context_object_name = 'users'
+
+    def get_queryset(self):
+        user_profile = self.request.user.profile
+        return Profile.objects.filter(follows=user_profile)
+
+class FollowProfileView(View):
+    def post(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            profile_to_follow = get_object_or_404(Profile, pk=kwargs['pk'])
             action = request.POST.get('follow', '')
             if action == 'follow':
                 request.user.profile.follows.add(profile_to_follow)
@@ -95,25 +83,16 @@ def follow_profile(request, pk):
                 messages.success(request, 'You have unfollowed this user.')
             else:
                 messages.error(request, 'Invalid action.')
-        return redirect('profile', user_id=pk)
-    else:
+            return redirect('profile', pk=kwargs['pk'])
         return redirect('login')
-def explore_profile(request):
-    if request.user.is_authenticated:
-        search_query = request.GET.get('q', '')  # Get the search query from the GET request
 
+class ExploreProfileView(ListView):
+    model = Profile
+    template_name = 'explore.html'
+    context_object_name = 'users'
+
+    def get_queryset(self):
+        search_query = self.request.GET.get('q', '')
         if search_query:
-            # Filter profiles based on search query
-            profiles = Profile.objects.filter(
-                user__username__icontains=search_query
-            )
-        else:
-            # Retrieve all profiles if no search query is provided
-            profiles = Profile.objects.all()
-
-        return render(request, 'explore.html', {
-            'title': 'Explore',
-            'users': profiles
-        })
-    else:
-        return redirect('login')
+            return Profile.objects.filter(user__username__icontains=search_query)
+        return Profile.objects.all()

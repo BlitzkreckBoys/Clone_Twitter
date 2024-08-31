@@ -20,6 +20,54 @@
 <div class="container">
     <div class="d-flex justify-content-center mb-3">
         <a href="{% url 'edit_profile' %}" class="btn btn-primary me-2">Edit Profile</a>
+        <a href="{% url 'following_list' %}" class="btn btn-secondary me-2">Following</a>
+        <a href="{% url 'followers_list' %}" class="btn btn-secondary">Followers</a>
+    </div>
+
+    {% if profile %}
+        <div class="profile-header">
+            {% if profile.profile_picture %}
+                <img src="{{ profile.profile_picture.url }}" alt="{{ profile.user.username }}'s profile picture" class="profile-img">
+            {% else %}
+                <img src="{% static 'images/default_profile_picture.jpg' %}" alt="Default profile picture" class="profile-img">
+            {% endif %}
+            <h1>{{ profile.user.username }}</h1>
+        </div>
+        <br>
+        <p>Email: {{ profile.user.email }}</p>
+        <p>Bio: {{ profile.bio }}</p>
+        {% if profile.location %}
+            <p>Location: {{ profile.location }}</p>
+        {% endif %}
+        <p>Date of Birth: {{ profile.date_of_birth }}</p>
+    {% else %}
+        <p>No profile information available.</p>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% comment %} {% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<style>
+    .profile-img {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 10px; /* Space between image and username */
+    }
+
+    .profile-header {
+        display: flex;
+        align-items: center;
+    }
+</style>
+
+<div class="container">
+    <div class="d-flex justify-content-center mb-3">
+        <a href="{% url 'edit_profile' %}" class="btn btn-primary me-2">Edit Profile</a>
         <a href="{% url 'following_list' %}" style="text-decoration: none; color: inherit;" class='btn btn-secondary me-2'>Following</a>
         <a href="{% url 'followers_list' %}" style="text-decoration: none; color: inherit;" class='btn btn-secondary'>Followers</a>
     </div>
@@ -44,7 +92,7 @@
         <p>No profile information available.</p>
     {% endif %}
 </div>
-{% endblock %}
+{% endblock %} {% endcomment %}
 
 {% comment %} {% extends "base.html" %}
 
