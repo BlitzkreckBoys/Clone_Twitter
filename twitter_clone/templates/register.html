@@ -88,7 +88,7 @@
 
 <body>
     <div class="main">
-        <h2>Register</h2>
+        <h2>Register Yourself</h2>
         <form method="POST" action="{% url 'register' %}">
             {% csrf_token %}
             {% if form.non_field_errors %}

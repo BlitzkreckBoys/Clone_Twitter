@@ -140,7 +140,9 @@ class FollowingTweetsView(ListView):
         followed_users = User.objects.filter(profile__in=followed_profiles)  # This converts it to a QuerySet of User objects
         return Tweet.objects.filter(user__in=followed_users).order_by('-created_at')
 class LikeTweetView(View):
+    """Like or unlike a tweet"""
     def post(self, request, tweet_id):
+        """for like and unlike """
         try:
             tweet = Tweet.objects.get(id=tweet_id)
         except Tweet.DoesNotExist:
@@ -156,6 +158,7 @@ class LikeTweetView(View):
             return JsonResponse({'liked': liked, 'likes_count': tweet.likes.count()})
         return JsonResponse({'error': 'User not authenticated'}, status=401)
 class TweetUpdateView(UpdateView):
+    """Edit tweet view for the current user"""
     model = Tweet
     form_class = TweetForm
     template_name = 'edit_tweet.html'
@@ -166,5 +169,6 @@ class TweetUpdateView(UpdateView):
         return queryset.filter(user=self.request.user)  # Ensure users can only edit their own tweets
 
     def form_valid(self, form):
+        
         # You can add additional logic here if needed
         return super().form_valid(form)
