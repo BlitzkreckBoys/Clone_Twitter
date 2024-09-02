@@ -1,0 +1,109 @@
+<style>
+/* Basic styling */
+/* Navbar styling */
+.navbar {
+  background: linear-gradient(135deg, #333, #1a1a2e); /* Greyish to dark bluish gradient */
+}
+
+.navbar-nav .nav-item .nav-link {
+  display: flex;
+  align-items: center; /* Ensure vertical alignment */
+}
+
+/* Dropdown menu styling */
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: #333;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* Show the dropdown menu on hover */
+.nav-item:hover .dropdown-menu {
+  display: block;
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Additional dropdown item styling */
+.dropdown-item {
+  color: white;
+  text-decoration: none;
+}
+
+.dropdown-item:hover {
+  background-color: #555;
+}
+</style>
+<header>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <div class="container-fluid">
+        <!-- Home icon and link -->
+        <a class="navbar-brand" href="{% url 'home' %}" style="display: flex; align-items: center;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
+            <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5z"/>
+          </svg>
+          <span style="margin-left: 5px;"></span>
+        </a>
+  
+        <!-- Navbar toggler for mobile view -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+  
+        <!-- Centralized X logo and link -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav mx-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'home' %}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-twitter-x" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865z"/>
+                </svg>
+              </a>
+            </li>
+          </ul>
+  
+          <!-- Right-aligned links -->
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'explore_profile' %}">Explore</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle profile-icon" href="#" id="navbarDropdown" role="button" aria-expanded="false">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                  <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                  <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+                </svg>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="{% if user.is_authenticated %}{% url 'profile' user.id %}{% endif %}">Profile</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="{% if user.is_authenticated %}{% url 'edit_profile' %}{% endif %}">Account</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="{% if user.is_authenticated %}{% url 'tweets_list' %}{% endif %}">For You</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <a class="dropdown-item" href="{% url 'following_list' %}">Following</a>
+                <li><hr class="dropdown-divider"></li>
+                <a class="dropdown-item" href="{% url 'followers_list' %}">Followers</a>
+                <li><hr class="dropdown-divider"></li>
+                <li>
+                  {% if user.is_authenticated %}
+                    <a class="dropdown-item" href="{% url 'logout' %}">Sign out</a>
+                  {% else %}
+                    <a class="dropdown-item" href="{% url 'login' %}">Sign in</a>
+                  {% endif %}
+                </li>
+              </ul>
+            </li>              
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>

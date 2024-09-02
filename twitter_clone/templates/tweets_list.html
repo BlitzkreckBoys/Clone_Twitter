@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<style>
+    body {
+        background-color: black;
+        color: white;
+    }
+
+    .profile-img {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 10px;
+    }
+
+    .profile-header {
+        display: flex;
+        align-items: center;
+    }
+
+    .profile-name {
+        font-size: 2rem;
+    }
+
+    .profile-username {
+        font-size: 1rem;
+        color: #aaa;
+    }
+
+    .container {
+        border-radius: 10px;
+        margin: 0 auto;
+        margin-top: 10px;
+        flex-direction: column;
+        flex: 1;
+        max-width: 800px;
+        padding: 20px;
+        border: 1px solid #808080;
+        background-color: #000;
+    }
+
+    .tweets-section {
+        background-color: #444;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .tweet-container {
+        background-color: #333;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        margin-bottom: 20px;
+    }
+
+    .tweet-container:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+    }
+
+    .tweet-profile-img {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 15px;
+    }
+
+    .tweet-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .username a {
+        font-size: 18px;
+        color: white;
+        text-decoration: none;
+    }
+
+    .username a:hover {
+        text-decoration: none;
+    }
+
+    .text-muted {
+        color: #999 !important;
+    }
+
+    .tweet-content {
+        margin-top: 5px;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .tweet-actions {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+    }
+
+    .tweet-actions i {
+        cursor: pointer;
+        color: #aaa;
+    }
+
+    .tweet-actions i:hover {
+        color: white;
+    }
+</style>
+<!-- Include FontAwesome for the icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+<div class="container">
+    <div class="tweets-section mt-4">
+        <h2 class="text-center">All Tweets</h2>
+        {% if tweets %}
+            <ul class="list-unstyled">
+                {% for tweet in tweets %}
+                    <li class="media tweet-container mb-3">
+                        <div class="tweet-header d-flex align-items-center">
+                            {% if tweet.user.profile.profile_picture %}
+                                <img src="{{ tweet.user.profile.profile_picture.url }}" alt="{{ tweet.user.username }}'s profile picture" class="tweet-profile-img rounded-circle">
+                            {% else %}
+                                <img src="{% static 'images/default_profile_picture.jpg' %}" alt="Default profile picture" class="tweet-profile-img rounded-circle">
+                            {% endif %}
+                            
+                            <div>
+                                <h2 class="profile-name">{{ tweet.user.first_name }} {{ tweet.user.last_name }}</h2>
+                                <span class="profile-username">@{{ tweet.user.username }}</span>
+                            </div>
+                        </div>
+                        <div class="tweet-content mt-2">
+                            {{ tweet.content }}
+                        </div>
+                        <p class="text-muted mt-1">{{ tweet.created_at }}</p>
+
+                        <!-- Tweet Actions: Like, Retweet, Reply -->
+                        <div class="tweet-actions">
+                            <i class="fas fa-heart"></i> <!-- Like button -->
+                            <i class="fas fa-retweet"></i> <!-- Retweet button -->
+                            <i class="fas fa-reply"></i> <!-- Reply button -->
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="text-center">No tweets to display.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

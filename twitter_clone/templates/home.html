@@ -1,0 +1,332 @@
+{% extends "base.html" %}
+{% load static %} <!-- Load static files -->
+{% block content %}
+<style>
+    body {
+        background-color: black;
+        color: white;
+        margin: 0;
+        padding: 0;
+    }
+    
+    .main-container {
+        display: flex;
+        justify-content: center; /* Centers Bcontainer horizontally */
+        padding: 20px;
+        background: linear-gradient(135deg,  rgba(0, 0, 0, 0.8),rgba(0, 123, 255, 0.3)); /* Gradient background */
+        border-radius: 10px; /* Optional: rounded corners */
+    }
+    
+    .Bcontainer {
+        display: flex;
+        align-items: flex-start; /* Align profile and tweet containers to the top */
+        gap: 20px; /* Adds space between profile and tweet containers */
+        max-width: 1200px; /* Set a max-width for Bcontainer */
+        width: 100%;
+    }
+    
+    .profile-container {
+        width: 250px; /* Fixed width for the profile container */
+        background-color: #222;
+        padding: 20px;
+        border-radius: 10px;
+        color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        text-align: center;
+    }
+    
+    .profile-container img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-bottom: 15px;
+    }
+    
+    .profile-container h2 {
+        margin: 10px 0;
+    }
+    
+    .profile-container p {
+        font-size: 14px;
+        margin-bottom: 5px;
+    }
+    
+    .profile-container .membership {
+        margin-top: 20px;
+        font-weight: bold;
+        color: gold;
+    }
+    
+    .profile-container .renew-btn {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 5px 15px;
+        color: #333;
+        background-color: #fff;
+        border-radius: 5px;
+        text-decoration: none;
+    }
+    
+    .profile-container .social-icons {
+        margin-top: 20px;
+    }
+    
+    .profile-container .social-icons a {
+        color: white;
+        margin: 0 10px;
+        text-decoration: none;
+    }
+    
+    .container {
+        flex: 1; /* Take up the remaining space */
+        padding: 20px;
+        background-color: #000;
+    }
+    
+    .tweets-section {
+        background-color: #444;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    
+    .tweet-container {
+        position: relative; /* Make this container the reference point for absolute positioning */
+        background-color: #333;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        margin-bottom: 20px;
+        width: 100%;
+    }
+    
+    .edit-icon {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        color: white; /* Adjust color as needed */
+        cursor: pointer;
+    }
+    
+    .tweet-container:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+    }
+    
+    .tweet-profile-img {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 15px;
+    }
+    
+    .tweet-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    
+    .username a {
+        font-size: 18px;
+        color: white;
+        text-decoration: none;
+    }
+    
+    .username a:hover {
+        text-decoration: none;
+    }
+    
+    .tweet-content {
+        margin-top: 5px;
+    }
+    
+    .text-muted {
+        color: #999 !important;
+    }
+    
+    .form-container {
+        background-color: #444;
+        padding: 20px;
+        border-radius: 10px;
+    }
+    
+    .form-container form {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .form-container button {
+        align-self: center;
+        background: linear-gradient(90deg, rgba(0, 123, 255, 1) 0%, rgba(0, 123, 255, 0.8) 100%);
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    
+    .form-container button:hover {
+        background: linear-gradient(90deg, rgba(0, 123, 255, 0.8) 0%, rgba(0, 123, 255, 1) 100%);
+    }
+    
+    .tweet-actions {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+    }
+    
+    .tweet-actions i {
+        cursor: pointer;
+        color: #aaa;
+    }
+    
+    .tweet-actions i.liked {
+        color: red;
+    }
+    
+    .tweet-actions i:hover {
+        color: white;
+    }
+    
+    .profile-name-link {
+        color: white; /* Set the text color */
+        text-decoration: none; /* Remove the underline */
+    }
+    
+    .profile-name-link:hover {
+        text-decoration: none; /* Ensure no underline on hover */
+    }
+    
+    .pagination {
+        text-align: center;
+        margin-top: 20px;
+    }
+    
+    .pagination a {
+        color: white;
+        text-decoration: none;
+        padding: 5px 10px;
+    }
+    
+    .pagination a:hover {
+        text-decoration: underline;
+    }
+    
+    .pagination .current {
+        padding: 5px 10px;
+        background-color: #444;
+        border-radius: 5px;
+    }
+    
+</style>
+
+<!-- Include FontAwesome for the icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+<div class="main-container">
+    <div class="Bcontainer">
+        <!-- Profile Container -->
+        <div class="profile-container">
+            {% if user.profile.profile_picture %}
+                <img src="{{ user.profile.profile_picture.url }}" alt="{{ user.username }}'s profile picture">
+            {% else %}
+                <img src="{% static 'images/default_profile_picture.jpg' %}" alt="Default profile picture">
+            {% endif %}
+            <h2><a href="{% url 'profile' user.id %}" class="profile-name-link">{{ user.profile.first_name }} {{ user.profile.last_name }}</a></h2>
+            <p>{{ user.profile.bio }}</p>
+            <p class="membership">{{ user.profile.membership }}</p>
+            <a href="{% url 'edit_profile' %}" class="renew-btn">Renew</a>
+            <div class="social-icons">
+                {% for social in user.profile.social_links.all %}
+                    <a href="{{ social.url }}"><i class="fab fa-{{ social.platform }}"></i></a>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Tweets Section -->
+        <div class="container">
+            <!-- Display the tweet form if the user is authenticated -->
+            {% if user.is_authenticated %}
+                <div class="form-container mt-4">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ tweet_form.as_p }}
+                        <button type="submit" class="btn btn-primary">Tweet</button>
+                    </form>
+                </div>
+            {% endif %}
+
+            <!-- Display tweets -->
+            <div class="tweets-section mt-4">
+                <h2 class="text-center">All Tweets</h2>
+                {% if page_obj %}
+                    <ul class="list-unstyled">
+                        {% for tweet in page_obj %}
+                            <li class="media tweet-container">
+                                <div class="tweet-header">
+                                    {% if tweet.user.profile.profile_picture %}
+                                        <img src="{{ tweet.user.profile.profile_picture.url }}" alt="{{ tweet.user.username }}'s profile picture" class="tweet-profile-img">
+                                    {% else %}
+                                        <img src="{% static 'images/default_profile_picture.jpg' %}" alt="Default profile picture" class="tweet-profile-img">
+                                    {% endif %}
+                                    
+                                    <span class="username">
+                                        <a href="{% url 'profile' tweet.user.id %}">{{ tweet.user.username }}</a>
+                                    </span>
+
+                                    <!-- Edit Tweet Icon -->
+                                    <a href="{% url 'edit_tweet' tweet.pk %}" class="edit-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                          <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                          <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                                        </svg>
+                                    </a>
+                                </div>
+                                <div class="tweet-content">
+                                    {{ tweet.content }}
+                                </div>
+                                <p class="text-muted">{{ tweet.created_at }}</p>
+
+                                <div class="tweet-actions">
+                                    <i class="fas fa-heart"
+                                       data-tweet-id="{{ tweet.id }}"
+                                       data-liked="{% if user in tweet.likes.all %}true{% else %}false{% endif %}">
+                                    </i>
+                                    <i class="fas fa-retweet"></i>
+                                    <i class="fas fa-reply"></i>
+                                    <span id="like-count-{{ tweet.id }}">{{ tweet.likes.count }}</span>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+
+                    <!-- Pagination controls -->
+                    <div class="pagination">
+                        <span class="step-links">
+                            {% if page_obj.has_previous %}
+                                <a href="?page=1">&laquo; first</a>
+                                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                            {% endif %}
+
+                            <span class="current">
+                                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                            </span>
+
+                            {% if page_obj.has_next %}
+                                <a href="?page={{ page_obj.next_page_number }}">next</a>
+                                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                            {% endif %}
+                        </span>
+                    </div>
+                {% else %}
+                    <p class="text-center">No tweets to display.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'js/script.js' %}"></script>
+{% endblock %}

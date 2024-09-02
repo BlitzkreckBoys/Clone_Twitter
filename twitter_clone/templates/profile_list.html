@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<style>
+    body {
+        background-color: black;
+        color: white;
+    }
+    
+    /* Gradient background for the main container */
+    .container {
+        background: linear-gradient(135deg, #1a1a2e, #6a0dad); /* Dark bluish to violet gradient */
+        padding: 2rem; /* Add padding to avoid content touching the edges */
+        border-radius: 10px; /* Optional: rounded corners for the container */
+    }
+    
+    .profile-img {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 15px; /* Space between image and text */
+    }
+    
+    .profile-card {
+        position: relative; /* Make this card relative for absolute positioning of button */
+        display: flex;
+        padding: 2rem;
+        background-color: #fff; /* White background for card */
+        border-radius: 10px; /* Rounded corners for the card */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow for card */
+    }
+    
+    .profile-img-container {
+        flex-shrink: 0;
+    }
+    
+    .profile-info {
+        display: flex;
+        align-items: center;
+    }
+    
+    .profile-details {
+        flex-grow: 1;
+    }
+    
+    .follow-button {
+        position: absolute; /* Position the button absolutely */
+        top: 10px;
+        right: 10px;
+        font-size: 0.75em;
+        color: #007bff;
+        cursor: pointer;
+        border: none;
+        background: none;
+        padding: 0;
+    }
+    
+    .card-title {
+        font-size: 1.25rem;
+        margin: 0;
+    }
+    
+    .username {
+        font-size: 0.9rem;
+        color: gray;
+        margin-top: 0.25rem; /* Space between name and username */
+    }
+    
+</style>
+
+<div class="container">
+    <h1 class="text-center mb-4">{{ title }}</h1>
+
+    {% if users %}
+        <div class="row">
+            {% for profile in users %}
+            <div class="col-md-6 mb-3">
+                <div class="card profile-card">
+                    {% if user.is_authenticated %}
+                        <form method="post" action="{% url 'follow_profile' profile.pk %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="follow" value="{% if profile in user.profile.follows.all %}unfollow{% else %}follow{% endif %}">
+                            <button type="submit" class="follow-button btn btn-link p-0">
+                                {% if profile in user.profile.follows.all %}
+                                    -Unfollow
+                                {% else %}
+                                    +Follow
+                                {% endif %}
+                            </button>
+                        </form>
+                    {% else %}
+                        <p><a href="{% url 'login' %}">Login to follow users</a></p>
+                    {% endif %}
+                    <div class="profile-info">
+                        <div class="profile-img-container">
+                            {% if profile.profile_picture %}
+                                <img src="{{ profile.profile_picture.url }}" alt="{{ profile.user.username }}'s profile picture" class="profile-img">
+                            {% else %}
+                                <img src="{% static 'images/default_profile_picture.jpg' %}" alt="Default profile picture" class="profile-img">
+                            {% endif %}
+                        </div>
+                        <div class="profile-details">
+                            <h5 class="card-title">
+                                <a href="{% url 'profile' profile.user.id %}" style="text-decoration: none; color: inherit;">
+                                    {{ profile.user.first_name }} {{ profile.user.last_name }}
+                                </a>
+                            </h5>
+                            <p class="username">@{{ profile.user.username }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-center">No users to display.</p>
+    {% endif %}
+</div>
+
+{% endblock %}

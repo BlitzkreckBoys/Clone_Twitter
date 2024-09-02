@@ -38,9 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'socialmed',
-    'twitterclone',
+    'twitter_clone',
     'authentication',
     'registration',
+    'tweet',
 ]
 
 MIDDLEWARE = [
@@ -72,12 +73,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'socialmed.wsgi.application'
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
+
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -92,7 +88,7 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
+DEBUG = True
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
@@ -109,7 +105,7 @@ USE_TZ = True
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'twitterclone',
+        'NAME': 'twitter1',
         'USER': 'postgres',
         'PASSWORD': '1415926535',
         'HOST': 'localhost',

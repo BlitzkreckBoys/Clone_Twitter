@@ -5,9 +5,10 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('twitterclone.urls')),  # Include URLs from the twitterclone app
-    path('auth/', include('authentication.urls')),  # Include URLs from the authentication app
-    path('register/', include('registration.urls')),  # Include URLs from the registration app
+    path('', include('twitter_clone.urls')),  # Note the trailing slash
+    path('auth/', include('authentication.urls')),
+    path('register/', include('registration.urls')),
+    # path('', include('tweet.urls')),
 ]
 
 if settings.DEBUG:

@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Registration Form</title>
+    <title>Login Form</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #fff;
+            background-color: #f3f3f3;
             margin: 0;
             padding: 0;
             display: flex;
@@ -61,9 +60,6 @@
         }
 
         a {
-            display: block;
-            text-align: center;
-            margin-top: 10px;
             color: #4caf50;
             text-decoration: none;
         }
@@ -71,18 +67,32 @@
         a:hover {
             text-decoration: underline;
         }
+
+        .error {
+            color: red;
+            margin-bottom: 15px;
+        }
     </style>
 </head>
 
 <body>
     <div class="main">
-        <h2>Register</h2>
+        <h2>Login</h2>
         <form method="POST">
             {% csrf_token %}
+            {% if form.errors %}
+                <div class="error">
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+            {% endif %}
             {{ form.as_p }}
-            <button type="submit">Register</button>
-            <a href="{% url 'login' %}">Already have an account? Log in</a>
+            <button type="submit">Login</button>
         </form>
+        <p><a href="{% url 'register' %}">Don't have an account? Create one</a></p>
     </div>
 </body>
 
