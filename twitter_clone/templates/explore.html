@@ -7,6 +7,11 @@
         color: white;
     }
 
+    .container {
+        padding: 2rem;
+        border-radius: 10px;
+    }
+
     .profile-img {
         width: 60px;
         height: 60px;
@@ -17,39 +22,55 @@
     }
 
     .profile-card {
-        position: relative; /* Ensure the follow button is positioned relative to the card */
+        position: relative;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         padding: 2rem;
         margin-bottom: 1rem;
-        border: 1px solid #ddd;
         border-radius: 10px;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        min-height: 150px; /* Ensure all cards have the same minimum height */
+        min-height: 150px;
+        background: linear-gradient(135deg, #1a1a2e, #333); /* Gradient background */
+        transition: transform 0.3s ease-in-out; /* Smooth hover effect */
+    }
+
+    .profile-card:hover {
+        transform: scale(1.02); /* Slight zoom effect on hover */
     }
 
     .profile-img-container {
         flex-shrink: 0;
-        margin-right: 1rem; /* Adds space between image and details */
+        margin-right: 1rem;
     }
 
     .profile-details {
         flex-grow: 1;
         display: flex;
-        align-items: center; /* Center align text vertically */
+        align-items: center;
+    }
+
+    .profile-card h5 {
+        color: white; /* Name color */
     }
 
     .follow-button {
         position: absolute;
         top: 10px;
         right: 10px;
-        font-size: 0.9em;
+        font-size: 0.8em;
         color: #007bff;
         cursor: pointer;
-        border: none;
+        border: 1px solid #007bff;
+        border-radius: 20px; /* Rounded edges */
         background: none;
-        padding: 0;
+        padding: 0.2rem 0.5rem; /* Slim button */
+        transition: background 0.3s ease;
+    }
+
+    .follow-button:hover {
+        background: #007bff;
+        color: white;
     }
 
     .profile-info {
@@ -64,18 +85,10 @@
     }
 
     .card-column {
-        flex: 0 1 calc(33.333% - 20px); /* 3 cards per row with space between */
+        flex: 0 1 calc(33.333% - 20px);
         margin: 10px;
     }
 
-    /* Background gradient */
-    .container {
-        background: linear-gradient(135deg, #1a1a2e, #6a0dad); /* Dark bluish to violet gradient */
-        padding: 2rem; /* Add padding to avoid content touching the edges */
-        border-radius: 10px; /* Optional: rounded corners for the container */
-    }
-
-    /* Search bar styles */
     .search-container {
         display: flex;
         justify-content: center;
@@ -83,7 +96,7 @@
     }
 
     .search-bar {
-        width: 300px;
+        width: calc(33.333% - 20px); /* Match width of profile cards */
         display: flex;
         align-items: center;
     }
@@ -93,7 +106,7 @@
         padding: 0.5rem;
         border: 1px solid #ddd;
         border-radius: 5px;
-        margin-right: -1px; /* Overlap with the button */
+        margin-right: -1px;
     }
 
     .search-button {
@@ -106,7 +119,7 @@
     .search-icon {
         width: 16px;
         height: 16px;
-        color: #007bff; /* Search icon color */
+        color: #007bff;
     }
 </style>
 
@@ -129,7 +142,9 @@
         <div class="card-container">
             {% for profile in users %}
             <div class="card-column">
+
                 <div class="card profile-card">
+                    <br>
                     <div class="profile-info">
                         <div class="profile-img-container">
                             {% if profile.profile_picture %}
@@ -141,7 +156,7 @@
                         <div class="profile-details">
                             <h5 class="card-title" style="font-size: 1.25rem; margin: 0;">
                                 <a href="{% url 'profile' profile.user.id %}" style="text-decoration: none; color: inherit;">
-                                    {{ profile.user.first_name }} {{ profile.user.last_name }}
+                                    {{ profile.first_name }} {{ profile.last_name }}
                                 </a>
                                 <p style="font-size: 0.9rem; color: gray;">{{ profile.user.username }}</p>
                             </h5>

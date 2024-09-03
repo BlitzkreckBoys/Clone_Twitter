@@ -267,14 +267,14 @@
                             <li class="media tweet-container">
                                 <div class="tweet-header">
                                     {% if tweet.user.profile.profile_picture %}
-                                        <img src="{{ tweet.user.profile.profile_picture.url }}" alt="{{ tweet.user.username }}'s profile picture" class="tweet-profile-img">
+                                        <img src="{{ tweet.user.profile.profile_picture.url }}" alt="{{ tweet.user.profileusername }}'s profile picture" class="tweet-profile-img">
                                     {% else %}
                                         <img src="{% static 'images/default_profile_picture.jpg' %}" alt="Default profile picture" class="tweet-profile-img">
                                     {% endif %}
-                                    
-                                    <span class="username">
-                                        <a href="{% url 'profile' tweet.user.id %}">{{ tweet.user.username }}</a>
-                                    </span>
+                                    <div>
+                                <h4 class="profile-name">{{ tweet.user.profile.first_name }} {{ tweet.user.profile.last_name }}</h4>
+                                <span class="profile-username">@{{ tweet.user.username }}</span>
+                            </div>
 
                                     <!-- Edit Tweet Icon -->
                                     <a href="{% url 'edit_tweet' tweet.pk %}" class="edit-icon">

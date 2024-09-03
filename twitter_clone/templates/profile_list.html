@@ -8,9 +8,9 @@
         color: white;
     }
     
-    /* Gradient background for the main container */
+    /* Black background for the main container */
     .container {
-        background: linear-gradient(135deg, #1a1a2e, #6a0dad); /* Dark bluish to violet gradient */
+        background-color: black; /* Solid black background */
         padding: 2rem; /* Add padding to avoid content touching the edges */
         border-radius: 10px; /* Optional: rounded corners for the container */
     }
@@ -27,9 +27,15 @@
         position: relative; /* Make this card relative for absolute positioning of button */
         display: flex;
         padding: 2rem;
-        background-color: #fff; /* White background for card */
+        background: linear-gradient(135deg, #1a1a2e, #333); /* Gradient background for card */
         border-radius: 10px; /* Rounded corners for the card */
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow for card */
+        color: white; /* Text color inside the card */
+        transition: background 0.3s; /* Smooth transition for hover effect */
+    }
+    
+    .profile-card:hover {
+        background: linear-gradient(135deg, #1a1a2e, #6a0dad); /* Gradient on hover */
     }
     
     .profile-img-container {
@@ -39,6 +45,7 @@
     .profile-info {
         display: flex;
         align-items: center;
+        flex-grow: 1;
     }
     
     .profile-details {
@@ -52,9 +59,16 @@
         font-size: 0.75em;
         color: #007bff;
         cursor: pointer;
-        border: none;
+        border: 1px solid #007bff;
+        border-radius: 15px; /* Rounded edges for the button */
         background: none;
-        padding: 0;
+        padding: 0.4rem 1.2rem; /* Slim button with increased width */
+        transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover effect */
+    }
+    
+    .follow-button:hover {
+        color: white;
+        background-color: #007bff; /* Background color on hover */
     }
     
     .card-title {
@@ -68,30 +82,40 @@
         margin-top: 0.25rem; /* Space between name and username */
     }
     
+    .card-container {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .card-column {
+        flex: 0 1 calc(50% - 20px); /* 2 cards per row with space between */
+        margin: 10px;
+    }
 </style>
 
 <div class="container">
     <h1 class="text-center mb-4">{{ title }}</h1>
 
     {% if users %}
-        <div class="row">
+        <div class="card-container">
             {% for profile in users %}
-            <div class="col-md-6 mb-3">
+            <div class="card-column">
                 <div class="card profile-card">
                     {% if user.is_authenticated %}
                         <form method="post" action="{% url 'follow_profile' profile.pk %}">
                             {% csrf_token %}
                             <input type="hidden" name="follow" value="{% if profile in user.profile.follows.all %}unfollow{% else %}follow{% endif %}">
-                            <button type="submit" class="follow-button btn btn-link p-0">
+                            <button type="submit" class="follow-button">
                                 {% if profile in user.profile.follows.all %}
-                                    -Unfollow
+                                    - Unfollow
                                 {% else %}
-                                    +Follow
+                                    + Follow
                                 {% endif %}
                             </button>
                         </form>
                     {% else %}
-                        <p><a href="{% url 'login' %}">Login to follow users</a></p>
+                        <p><a href="{% url 'login' %}" style="color: white;">Login to follow users</a></p>
                     {% endif %}
                     <div class="profile-info">
                         <div class="profile-img-container">
@@ -104,7 +128,7 @@
                         <div class="profile-details">
                             <h5 class="card-title">
                                 <a href="{% url 'profile' profile.user.id %}" style="text-decoration: none; color: inherit;">
-                                    {{ profile.user.first_name }} {{ profile.user.last_name }}
+                                    {{ profile.first_name }} {{ profile.last_name }}
                                 </a>
                             </h5>
                             <p class="username">@{{ profile.user.username }}</p>

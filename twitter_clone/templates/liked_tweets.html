@@ -1,0 +1,79 @@
+<!-- liked_tweets.html -->
+
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+    body {
+        background-color: black;
+        color: white;
+        font-family: Arial, sans-serif;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .page-title {
+        font-size: 2rem;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .tweet-cards-container {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .tweet-card {
+        background: linear-gradient(145deg, #002b5c, #4a4a4a);
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        color: white;
+    }
+
+    .tweet-card:hover {
+        transform: scale(1.03);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+        transition: all 0.3s ease;
+    }
+
+    .tweet-content {
+        font-size: 1rem;
+        margin: 0;
+    }
+
+    .tweet-meta {
+        font-size: 0.9rem;
+        color: #ccc;
+    }
+
+    .no-tweets {
+        text-align: center;
+        font-size: 1.2rem;
+        color: #aaa;
+    }
+</style>
+<div class="container">
+    <h1 class="page-title">Liked Tweets</h1>
+
+    {% if tweets %}
+        <div class="tweet-cards-container">
+            {% for tweet in tweets %}
+                <div class="tweet-card">
+                    <p class="tweet-content">{{ tweet.content }}</p>
+                    <p class="tweet-meta"><small>Liked on: {{ tweet.created_at }}</small></p>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="no-tweets">You have not liked any tweets yet.</p>
+    {% endif %}
+</div>
+
+{% endblock %}
+

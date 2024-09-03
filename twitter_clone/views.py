@@ -147,14 +147,26 @@ class ExploreProfileView(ListView):
 class FollowingTweetsView(ListView):
     """List of tweets from users I follow"""
     model = Tweet
-    template_name = 'tweets_list.html'
+    template_name = 'tweet_list.html'
     context_object_name = 'tweets'
 
     def get_queryset(self):
         user = self.request.user
-        followed_profiles = user.profile.follows.all()  # This returns a QuerySet of Profile objects
-        followed_users = User.objects.filter(profile__in=followed_profiles)  # This converts it to a QuerySet of User objects
-        return Tweet.objects.filter(user__in=followed_users).order_by('-created_at')
+        followed_profiles = user.profile.follows.all()  # QuerySet of Profile objects
+        followed_users = User.objects.filter(profile__in=followed_profiles)  # QuerySet of User objects
+        search_query = self.request.GET.get('q', '')
+        # Initial query for tweets from followed users
+        tweets = Tweet.objects.filter(user__in=followed_users).select_related('user').order_by('-created_at')
+        # Apply search filter if a query is present
+        if search_query:
+            tweets = tweets.filter(
+                Q(content__icontains=search_query) |  # Search in tweet content
+                Q(user__username__icontains=search_query)  # Search in usernames
+            )
+
+        return tweets
+
+    
 class LikeTweetView(View):
     """Like or unlike a tweet"""
     def post(self, request, tweet_id):
@@ -188,21 +200,16 @@ class TweetUpdateView(UpdateView):
         
         # You can add additional logic here if needed
         return super().form_valid(form)
-class TweetListView(ListView):
-    """List of tweets"""
+
+class LikedTweetsView(ListView):
+    """List of tweets liked by the current user"""
     model = Tweet
-    template_name = 'tweet_list.html'
+    template_name = 'liked_tweets.html'
     context_object_name = 'tweets'
-    paginate_by = 10
-
+    
     def get_queryset(self):
-        query = self.request.GET.get('q', '')
-        if query:
-            return Tweet.objects.filter(Q(content__icontains=query)).order_by('-created_at')
-        else:
-            return Tweet.objects.all().order_by('-created_at')
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['query'] = self.request.GET.get('q', '')
-        return context
+        """Return the list of tweets liked by the current user."""
+        user = self.request.user
+        if user.is_authenticated:
+            return Tweet.objects.filter(likes=user).order_by('-created_at')
+        return Tweet.objects.none()  # Return an empty queryset if not authenticated

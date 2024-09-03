@@ -1,3 +1,8 @@
+{% comment %} {% extends "base.html" %}
+
+{% block title %}Navbar{% endblock %}
+
+{% block content %} {% endcomment %}
 <style>
 /* Basic styling */
 /* Navbar styling */
@@ -87,13 +92,14 @@
                 <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item" href="{% if user.is_authenticated %}{% url 'edit_profile' %}{% endif %}">Account</a></li>
                 <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="{% if user.is_authenticated %}{% url 'tweets_list' %}{% endif %}">For You</a></li>
+                <li><a class="dropdown-item" href="{% if user.is_authenticated %}{% url 'tweet_list' %}{% endif %}">For You</a></li>
                 <li><hr class="dropdown-divider"></li>
-                <a class="dropdown-item" href="{% url 'following_list' %}">Following</a>
+                <li><a class="dropdown-item" href="{% if user.is_authenticated %}{% url 'liked_tweets' %}{% endif %}">Liked Tweets</a></li>
                 <li><hr class="dropdown-divider"></li>
-                <a class="dropdown-item" href="{% url 'followers_list' %}">Followers</a>
+                <li><a class="dropdown-item" href="{% url 'following_list' %}">Following</a></li>
                 <li><hr class="dropdown-divider"></li>
-                <li>
+                <li><a class="dropdown-item" href="{% url 'followers_list' %}">Followers</a></li>
+                <li><hr class="dropdown-divider"></li>
                   {% if user.is_authenticated %}
                     <a class="dropdown-item" href="{% url 'logout' %}">Sign out</a>
                   {% else %}
@@ -107,3 +113,4 @@
       </div>
     </nav>
   </header>
+  {% comment %} {% endblock %} {% endcomment %}

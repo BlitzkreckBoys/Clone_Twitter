@@ -1,213 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base1.html" %}
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Registration Form</title>
-    <style>
-        body {
-            background-color: black;
-            color: white;
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
+{% block title %}Register{% endblock %}
 
-        .main {
-            background-color: #fff;
-            border-radius: 15px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-            padding: 20px;
-            width: 100%;
-            max-width: 400px;
-        }
+{% block content %}
+<h2>Register Yourself</h2>
+<form method="POST" action="{% url 'register' %}">
+    {% csrf_token %}
+    {% if form.non_field_errors %}
+        <div class="errorlist">
+            {{ form.non_field_errors }}
+        </div>
+    {% endif %}
+    <label for="{{ form.username.id_for_label }}">Username</label>
+    {{ form.username }}
 
-        .main h2 {
-            color: #4caf50;
-            margin-bottom: 20px;
-        }
+    <label for="{{ form.first_name.id_for_label }}">First Name</label>
+    {{ form.first_name }}
 
-        label {
-            display: block;
-            margin-bottom: 5px;
-            color: #555;
-            font-weight: bold;
-        }
+    <label for="{{ form.last_name.id_for_label }}">Last Name</label>
+    {{ form.last_name }}
 
-        input[type="text"],
-        input[type="email"],
-        input[type="password"] {
-            width: 100%;
-            margin-bottom: 15px;
-            padding: 10px;
-            box-sizing: border-box;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
+    <label for="{{ form.email.id_for_label }}">Email Address</label>
+    {{ form.email }}
 
-        button[type="submit"] {
-            padding: 15px;
-            border-radius: 10px;
-            border: none;
-            background-color: #4caf50;
-            color: white;
-            cursor: pointer;
-            width: 100%;
-            font-size: 16px;
-        }
+    <label for="{{ form.password1.id_for_label }}">Password</label>
+    {{ form.password1 }}
 
-        button[type="submit"]:hover {
-            background-color: #45a049;
-        }
+    <label for="{{ form.password2.id_for_label }}">Confirm Password</label>
+    {{ form.password2 }}
 
-        .errorlist {
-            color: #d9534f;
-            margin-bottom: 15px;
-        }
-
-        a {
-            display: block;
-            text-align: center;
-            margin-top: 10px;
-            color: #4caf50;
-            text-decoration: none;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-        
-    </style>
-</head>
-
-<body>
-    <div class="main">
-        <h2>Register Yourself</h2>
-        <form method="POST" action="{% url 'register' %}">
-            {% csrf_token %}
-            {% if form.non_field_errors %}
-                <div class="errorlist">
-                    {{ form.non_field_errors }}
-                </div>
-            {% endif %}
-            <label for="{{ form.username.id_for_label }}">Username</label>
-            {{ form.username }}
-
-            <label for="{{ form.first_name.id_for_label }}">First Name</label>
-            {{ form.first_name }}
-
-            <label for="{{ form.last_name.id_for_label }}">Last Name</label>
-            {{ form.last_name }}
-
-            <label for="{{ form.email.id_for_label }}">Email Address</label>
-            {{ form.email }}
-
-            <label for="{{ form.password1.id_for_label }}">Password</label>
-            {{ form.password1 }}
-
-            <label for="{{ form.password2.id_for_label }}">Confirm Password</label>
-            {{ form.password2 }}
-
-            <button type="submit">Register</button>
-            <a href="{% url 'login' %}">Already have an account? Log in</a>
-        </form>
-    </div>
-</body>
-
-</html>
-
-{% comment %} <!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Registration Form</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #fff;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .main {
-            background-color: #fff;
-            border-radius: 15px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-            padding: 20px;
-            width: 300px;
-        }
-
-        .main h2 {
-            color: #4caf50;
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-            color: #555;
-            font-weight: bold;
-        }
-
-        input[type="text"],
-        input[type="email"],
-        input[type="password"],
-        select {
-            width: 100%;
-            margin-bottom: 15px;
-            padding: 10px;
-            box-sizing: border-box;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-
-        button[type="submit"] {
-            padding: 15px;
-            border-radius: 10px;
-            border: none;
-            background-color: #4caf50;
-            color: white;
-            cursor: pointer;
-            width: 100%;
-            font-size: 16px;
-        }
-
-        a {
-            display: block;
-            text-align: center;
-            margin-top: 10px;
-            color: #4caf50;
-            text-decoration: none;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-    </style>
-</head>
-
-<body>
-    <div class="main">
-        <h2>Register</h2>
-        <form method="POST">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Register</button>
-            <a href="{% url 'login' %}">Already have an account? Log in</a>
-        </form>
-    </div>
-</body>
-
-</html> {% endcomment %}
+    <button type="submit">Register</button>
+    <a href="{% url 'login' %}">Already have an account? Log in</a>
+</form>
+{% endblock %}
