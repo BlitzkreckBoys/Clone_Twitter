@@ -3,22 +3,30 @@ from django.contrib.auth.models import User
 from django.urls import reverse_lazy
 from django.http import JsonResponse
 from django.core.paginator import Paginator
+from django.db.models import Q
 from django.views.generic import View, UpdateView, DetailView, ListView
 from django.contrib import messages
 from .models import Profile,Tweet
 from .forms import ProfileForm, UserForm,TweetForm
-
 class HomeView(View):
     """ Home view for the profile """
     def get(self, request, *args, **kwargs):
         """ for the profile view """
         if request.user.is_authenticated:
             tweet_form = TweetForm()
-            tweets = Tweet.objects.filter(
-                user__in=request.user.profile.follows.values_list('id', flat=True)
-            ).order_by('-created_at')
-            user_tweets = Tweet.objects.filter(user=request.user)
-            tweets = tweets | user_tweets
+
+            # Search functionality
+            query = request.GET.get('q', '')
+            if query:
+                tweets = Tweet.objects.filter(
+                    user__in=request.user.profile.follows.values_list('id', flat=True),
+                    content__icontains=query
+                ) | Tweet.objects.filter(user=request.user, content__icontains=query)
+            else:
+                tweets = Tweet.objects.filter(
+                    user__in=request.user.profile.follows.values_list('id', flat=True)
+                ) | Tweet.objects.filter(user=request.user)
+
             tweets = tweets.order_by('-created_at')
 
             # Pagination
@@ -118,15 +126,23 @@ class FollowProfileView(View):
             return redirect('profile', pk=kwargs['pk'])
         return redirect('login')
 
+
 class ExploreProfileView(ListView):
     """Explore users based on search query"""
     model = Profile
     template_name = 'explore.html'
     context_object_name = 'users'
+
     def get_queryset(self):
         search_query = self.request.GET.get('q', '')
         if search_query:
-            return Profile.objects.filter(user__username__icontains=search_query)
+            return Profile.objects.filter(
+                user__username__icontains=search_query
+            ) | Profile.objects.filter(
+                user__first_name__icontains=search_query
+            ) | Profile.objects.filter(
+                user__last_name__icontains=search_query
+            )
         return Profile.objects.all()
 class FollowingTweetsView(ListView):
     """List of tweets from users I follow"""
@@ -172,3 +188,21 @@ class TweetUpdateView(UpdateView):
         
         # You can add additional logic here if needed
         return super().form_valid(form)
+class TweetListView(ListView):
+    """List of tweets"""
+    model = Tweet
+    template_name = 'tweet_list.html'
+    context_object_name = 'tweets'
+    paginate_by = 10
+
+    def get_queryset(self):
+        query = self.request.GET.get('q', '')
+        if query:
+            return Tweet.objects.filter(Q(content__icontains=query)).order_by('-created_at')
+        else:
+            return Tweet.objects.all().order_by('-created_at')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['query'] = self.request.GET.get('q', '')
+        return context

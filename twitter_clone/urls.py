@@ -12,5 +12,7 @@ urlpatterns = [
     path('followers/', FollowersListView.as_view(), name='followers_list'),
     path('follow_profile/<int:pk>/', FollowProfileView.as_view(), name='follow_profile'),
     path('explore/', ExploreProfileView.as_view(), name='explore_profile'),
+    path('tweets/', TweetListView.as_view(), name='tweet_list'),
+
 
 ]
