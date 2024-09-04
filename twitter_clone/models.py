@@ -31,7 +31,5 @@ class Tweet(models.Model):
     content = models.CharField(max_length=280)
     created_at = models.DateTimeField(auto_now_add=True)
     likes = models.ManyToManyField(User, related_name='twitter_clone_liked_tweets', blank=True)
-    retweets = models.ManyToManyField(User, related_name='twitter_clone_retweeted_tweets', blank=True)
-
     def __str__(self):
         return self.content[:50] + '...'

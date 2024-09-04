@@ -71,3 +71,12 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
+// const dialog = document.getElementById("tweet-dialog");
+
+//         function showTweetDialog() {
+//             dialog.showModal(); // Show the dialog
+//         }
+
+//         function closeTweetDialog() {
+//             dialog.close(); // Close the dialog
+//         }

@@ -11,11 +11,10 @@ from .forms import ProfileForm, UserForm,TweetForm
 class HomeView(View):
     """ Home view for the profile """
     def get(self, request, *args, **kwargs):
-        """ for the profile view """
+        """ Render the home page with tweets """
         if request.user.is_authenticated:
             tweet_form = TweetForm()
-
-            # Search functionality
+            # Fetch tweets (with search functionality if needed)
             query = request.GET.get('q', '')
             if query:
                 tweets = Tweet.objects.filter(
@@ -43,12 +42,12 @@ class HomeView(View):
     def post(self, request, *args, **kwargs):
         """ Handle tweet submission """
         if request.user.is_authenticated:
-            tweet_form = TweetForm(request.POST, request.FILES)
+            tweet_form = TweetForm(request.POST)
             if tweet_form.is_valid():
                 tweet = tweet_form.save(commit=False)
                 tweet.user = request.user
                 tweet.save()
-                return redirect('home')
+                return redirect('home')  # Redirect to avoid form resubmission on refresh
         return redirect('login')
 class ProfileView(DetailView):
     """Profile view for a specific user"""

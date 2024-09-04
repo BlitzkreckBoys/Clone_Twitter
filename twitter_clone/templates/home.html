@@ -24,8 +24,75 @@
         max-width: 1200px; /* Set a max-width for Bcontainer */
         width: 100%;
     }
+    .hcontainer {
+        position: sticky;
+        top: 20px;
+        width: 250px;
+        background-color: #222;
+        padding: 20px;
+        border-radius: 10px;
+        color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        text-align: left; /* Align all text and links to the left */
+    }
+    
+    .hcontainer .nav-links {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start; /* Align the links to the left */
+        gap: 15px;
+        margin-top: 20px;
+    }
+    
+    .hcontainer .nav-link {
+        color: white;
+        font-size: 18px;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start; /* Align icon and text to the left */
+    }
+    
+    .hcontainer .nav-link i {
+        margin-left: 10px; /* Space between text and icon */
+    }
+    
+    .hcontainer .nav-link:hover {
+        text-decoration: underline;
+    }
+    .hcontainer .membership {
+        margin-top: 20px; /* Space above membership status */
+        font-weight: bold;
+        color: gold; /* Highlight membership status */
+    }
+    
+    .hcontainer .renew-btn {
+        display: block; /* Make the button a block-level element */
+        margin: 20px auto 10px auto; /* Center the button horizontally and add spacing */
+        padding: 5px 15px; /* Padding for the button */
+        color: #333; /* Darker text color */
+        background-color: #fff; /* White background for contrast */
+        border-radius: 5px; /* Rounded button */
+        text-decoration: none; /* Remove underline from link */
+        text-align: center; /* Center the text inside the button */
+    }
+    
+    .hcontainer .social-icons {
+        display: flex;
+        justify-content: center; /* Center the icons horizontally */
+        margin-top: 20px; /* Space above social icons */
+    }
+    
+    .hcontainer .social-icons a {
+        color: white; /* White icon color */
+        margin: 0 10px; /* Spacing between icons */
+        text-decoration: none; /* Remove underline from icons */
+    }
+    
     
     .profile-container {
+        position: sticky;
+        top: 20px; /* Adjust the value to control the distance from the top */
         width: 250px; /* Fixed width for the profile container */
         background-color: #222;
         padding: 20px;
@@ -219,31 +286,170 @@
         background-color: #444;
         border-radius: 5px;
     }
+    .box{
+        text-align: center;
+    }
+    .button {
+        font-size:1em;
+        padding: 15px 35px;
+        color: #fff;
+        text-decoration: none;
+        cursor: pointer;
+        transition:all 0.3s ease-out;
+        background-color: #4CAF50;
+        border-radius: 50px;
+    }
     
-</style>
+    .overlay {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: rgba(0,0,0,0.8);
+        transition: opacity 500ms;
+        visibility: hidden;
+        opacity: 0;
+        z-index: 1000; /* Ensures the overlay is in front */
+    }
+    
+    .overlay:target {
+        visibility: visible;
+        opacity: 1;
+    }
+    
+    .wrapper {
+        margin: 70px auto;
+        padding: 20px;
+        background-color: #e7e7e7;
+        border-radius: 5px;
+        width: 30%;
+        position: relative;
+        transition: all 0.5s ease-in-out;
+        z-index: 1001; /* Higher than the overlay */
+    }
+    
+    .wrapper h2 {
+        margin-top: 0;
+        color: #333;
+    }
+    
+    .wrapper .close {
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        transition: all 200ms;
+        font-size: 30px;
+        font-weight: bold;
+        text-decoration: none;
+        color: #333;
+    }
+    
+    .wrapper .content {
+        max-height: 30%;
+        overflow: auto;
+    }
+    .pop-container {
+        border-radius: 5px;
+        background-color: #e7e7e7;
+        padding: 20px 0;
+    }
+    /* Center the button within its container */
+    .btn btn-dark {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%; /* Adjust based on your layout */
+    }
+    
+    /* Style for the button */
+    .dark-blue-btn {
+        background: linear-gradient(135deg, #1a1aff, #4b4b4b); /* Gradient from blue to dark greyish */
+        color: white; /* White text color */
+        border: none; /* Remove any default border */
+        border-radius: 50px; /* Fully rounded edges */
+        padding: 10px 20px; /* Padding for the button */
+        cursor: pointer; /* Change cursor to pointer */
+        transition: background 0.3s ease, transform 0.3s ease; /* Smooth transition */
+    }
+    
+    .dark-blue-btn:hover {
+        background: linear-gradient(135deg, #0000cc, #333333); /* Darker gradient on hover */
+        transform: scale(1.05); /* Slightly increase button size */
+    }
+    .btn-container{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+    }
+    
 
+</style>
 <!-- Include FontAwesome for the icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
 <div class="main-container">
     <div class="Bcontainer">
-        <!-- Profile Container -->
-        <div class="profile-container">
-            {% if user.profile.profile_picture %}
-                <img src="{{ user.profile.profile_picture.url }}" alt="{{ user.username }}'s profile picture">
-            {% else %}
-                <img src="{% static 'images/default_profile_picture.jpg' %}" alt="Default profile picture">
-            {% endif %}
-            <h2><a href="{% url 'profile' user.id %}" class="profile-name-link">{{ user.profile.first_name }} {{ user.profile.last_name }}</a></h2>
-            <p>{{ user.profile.bio }}</p>
-            <p class="membership">{{ user.profile.membership }}</p>
-            <a href="{% url 'edit_profile' %}" class="renew-btn">Renew</a>
+        <!-- Hcontainer (left side) -->
+        <div class="hcontainer">
+            <div class="nav-links">
+                <a href="{% url 'home' %}" class="nav-link">
+                    <span>HOME</span><i class="fas fa-home"></i>
+                </a>
+                <a href="{% url 'explore_profile' %}" class="nav-link">
+                    <span>Explore</span><i class="fas fa-search"></i>
+                </a>
+                <a href="#" class="nav-link">
+                    <span>Notifications</span><i class="fas fa-bell"></i>
+                </a>
+                <a href="{% url 'liked_tweets' %}" class="nav-link">
+                    <span>Liked Tweet</span><i class="fas fa-heart"></i>
+                </a>
+                <a href="#" class="nav-link">
+                    <span>Messages</span><i class="fas fa-comment-dots"></i>
+                </a>
+                <a href="{% url 'profile' user.id %}" class="nav-link">
+                    <span>Profile</span><i class="fas fa-user"></i>
+                </a>
+                <a href="#" class="nav-link">
+                    <span>Jobs</span><i class="fa fa-briefcase"></i>
+                </a>
+            </div>
+            <div class="box">
+                <a href="#divOne" class="renew-btn">Post</a>
+            </div>
+            
+            <div class="overlay" id="divOne">
+                <div class="wrapper">
+                    <h2 class="text-center">Tweet</h2>
+                    <a href="#" class="close">&times;</a> <!-- Updated href to '#' to close the modal -->
+                    <div class="content">
+                        <div class="pop-container">
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {{ tweet_form.as_p }}
+                            <div class="btn-container">
+                            <button type="submit" class="dark-blue-btn">Tweet</button>
+                            </div>
+                        </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="social-icons">
-                {% for social in user.profile.social_links.all %}
-                    <a href="{{ social.url }}"><i class="fab fa-{{ social.platform }}"></i></a>
-                {% endfor %}
+                <a href="https://www.facebook.com/login" target="_blank">
+                    <i class="fab fa-facebook-f"></i>
+                </a>                
+                <a href="https://x.com/i/flow/login" target="_blank">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="https://www.instagram.com/accounts/login/" target="_blank">
+                    <i class="fab fa-instagram"></i>
+                </a>            
             </div>
         </div>
+        
 
         <!-- Tweets Section -->
         <div class="container">
@@ -301,7 +507,7 @@
                             </li>
                         {% endfor %}
                     </ul>
-
+                    
                     <!-- Pagination controls -->
                     <div class="pagination">
                         <span class="step-links">
@@ -323,8 +529,27 @@
                 {% else %}
                     <p class="text-center">No tweets to display.</p>
                 {% endif %}
+                
             </div>
         </div>
+        <!-- Profile Container -->
+        <div class="profile-container">
+            {% if user.profile.profile_picture %}
+                <img src="{{ user.profile.profile_picture.url }}" alt="{{ user.username }}'s profile picture">
+            {% else %}
+                <img src="{% static 'images/default_profile_picture.jpg' %}" alt="Default profile picture">
+            {% endif %}
+            <h2><a href="{% url 'profile' user.id %}" class="profile-name-link">{{ user.profile.first_name }} {{ user.profile.last_name }}</a></h2>
+            <p>{{ user.profile.bio }}</p>
+            <p class="membership">{{ user.profile.membership }}</p>
+            <a href="{% url 'edit_profile' %}" class="renew-btn">Renew</a>
+            <div class="social-icons">
+                {% for social in user.profile.social_links.all %}
+                    <a href="{{ social.url }}"><i class="fab fa-{{ social.platform }}"></i></a>
+                {% endfor %}
+            </div>
+        </div>
+        
     </div>
 </div>
 
