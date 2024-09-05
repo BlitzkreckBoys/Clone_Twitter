@@ -1,165 +1,17 @@
 {% extends "base.html" %}
 {% load static %}
+{% block title %}Tweet Listing{% endblock %}
+
 {% block content %}
-<style>
-    body {
-        background-color: black;
-        color: white;
-    }
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
 
-    .profile-img {
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        object-fit: cover;
-        margin-right: 10px;
-    }
-
-    .profile-header {
-        display: flex;
-        align-items: center;
-    }
-
-    .profile-name {
-        font-size: 2rem;
-    }
-
-    .profile-username {
-        font-size: 1rem;
-        color: #aaa;
-    }
-
-    .container {
-        border-radius: 10px;
-        margin: 0 auto;
-        margin-top: 10px;
-        flex-direction: column;
-        flex: 1;
-        max-width: 800px;
-        padding: 20px;
-        border: 1px solid #808080;
-        background-color: #000;
-    }
-
-    .tweets-section {
-        background-color: #444;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-
-    .tweet-container {
-        background-color: #333;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        margin-bottom: 20px;
-    }
-
-    .tweet-container:hover {
-        transform: scale(1.05);
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
-    }
-
-    .tweet-profile-img {
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        object-fit: cover;
-        margin-right: 15px;
-    }
-
-    .tweet-header {
-        display: flex;
-        align-items: center;
-        margin-bottom: 10px;
-    }
-
-    .username a {
-        font-size: 18px;
-        color: white;
-        text-decoration: none;
-    }
-
-    .username a:hover {
-        text-decoration: none;
-    }
-
-    .text-muted {
-        color: #999 !important;
-    }
-
-    .tweet-content {
-        margin-top: 5px;
-    }
-
-    .text-center {
-        text-align: center;
-    }
-    .tweet-actions {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 10px;
-    }
-    
-    .tweet-actions i {
-        cursor: pointer;
-        color: #aaa;
-    }
-    
-    .tweet-actions i.liked {
-        color: red;
-    }
-    
-    .tweet-actions i:hover {
-        color: white;
-    }
-
-    .search-container {
-        display: flex;
-        justify-content: center; /* Center horizontally */
-        margin-bottom: 1rem;
-        width: 100%; /* Ensure the container takes full width */
-    }
-
-    .search-bar {
-        width: 100%; /* Ensure the search bar takes full width of its parent */
-        max-width: 500px; /* Limit the width of the search bar */
-        display: flex;
-        align-items: center;
-    }
-
-    .search-input {
-        flex: 1;
-        padding: 0.5rem;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        margin-right: -1px; /* Overlap with the button */
-    }
-
-    .search-button {
-        background: none;
-        border: none;
-        cursor: pointer;
-        padding: 0.5rem;
-    }
-
-    .search-icon {
-        width: 16px;
-        height: 16px;
-        color: #007bff; /* Search icon color */
-    }
-</style>
-<!-- Include FontAwesome for the icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-
-<div class="container">
+<div class="list-container">
     <!-- Search Bar -->
-    <div class="search-container">
-        <form method="get" action="{% url 'tweet_list' %}" class="search-bar">
-            <input type="text" name="q" class="search-input" placeholder="Search tweets..." value="{{ query }}">
-            <button type="submit" class="search-button">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search search-icon" viewBox="0 0 16 16">
+    <div class="list-search-container">
+        <form method="get" action="{% url 'tweet_list' %}" class="list-search-bar">
+            <input type="text" name="q" class="list-search-input" placeholder="Search tweets..." value="{{ query }}">
+            <button type="submit" class="list-search-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search list-search-icon" viewBox="0 0 16 16">
                     <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
                 </svg>
             </button>
@@ -167,32 +19,32 @@
     </div>
 
     <!-- Tweets Section -->
-    <div class="tweets-section mt-4">
-        <h2 class="text-center">FEED</h2>
+    <div class="list-tweets-section mt-4">
+        <h2 class="list-text-center">FEED</h2>
         {% if tweets %}
             <ul class="list-unstyled">
                 {% for tweet in tweets %}
-                    <li class="media tweet-container mb-3">
-                        <div class="tweet-header d-flex align-items-center">
+                    <li class="media list-tweet-container mb-3">
+                        <div class="list-tweet-header d-flex align-items-center">
                             {% if tweet.user.profile.profile_picture %}
-                                <img src="{{ tweet.user.profile.profile_picture.url }}" alt="{{ tweet.user.username }}'s profile picture" class="tweet-profile-img rounded-circle">
+                                <img src="{{ tweet.user.profile.profile_picture.url }}" alt="{{ tweet.user.username }}'s profile picture" class="list-tweet-profile-img rounded-circle">
                             {% else %}
-                                <img src="{% static 'images/default_profile_picture.jpg' %}" alt="Default profile picture" class="tweet-profile-img rounded-circle">
+                                <img src="{% static 'images/default_profile_picture.jpg' %}" alt="Default profile picture" class="list-tweet-profile-img rounded-circle">
                             {% endif %}
                             
                             <div>
-                                <h4 class="profile-name">{{ tweet.user.profile.first_name }} {{ tweet.user.profile.last_name }}</h4>
-                                <span class="profile-username">@{{ tweet.user.username }}</span>
+                                <h4 class="list-profile-name">{{ tweet.user.profile.first_name }} {{ tweet.user.profile.last_name }}</h4>
+                                <span class="list-profile-username">@{{ tweet.user.username }}</span>
                             </div>
                         </div>
-                        <div class="tweet-content mt-2">
+                        <div class="list-tweet-content mt-2">
                             {{ tweet.content }}
                         </div>
-                        <p class="text-muted mt-1">{{ tweet.created_at }}</p>
+                        <p class="list-text-muted mt-1">{{ tweet.created_at }}</p>
     
                         <!-- Tweet Actions: Like, Retweet, Reply -->
-                        <div class="tweet-actions">
-                            <i class="fas fa-heart"
+                        <div class="list-tweet-actions">
+                            <i class="fas fa-heart list-liked"
                                data-tweet-id="{{ tweet.id }}"
                                data-liked="{% if user in tweet.likes.all %}true{% else %}false{% endif %}">
                             </i>
@@ -204,8 +56,9 @@
                 {% endfor %}
             </ul>
         {% else %}
-            <p class="text-center">No tweets to display.</p>
+            <p class="list-text-center">No tweets to display.</p>
         {% endif %}
     </div>
 <script src="{% static 'js/script.js' %}"></script>
 {% endblock %}
+

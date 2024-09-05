@@ -1,0 +1,952 @@
+
+    body {
+        background-color: black;
+        color: white;
+    }
+
+    .list-profile-img {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 10px;
+    }
+
+    .list-profile-header {
+        display: flex;
+        align-items: center;
+    }
+
+    .list-profile-name {
+        font-size: 2rem;
+    }
+
+    .list-profile-username {
+        font-size: 1rem;
+        color: #aaa;
+    }
+
+    .list-container {
+        border-radius: 10px;
+        margin: 0 auto;
+        margin-top: 10px;
+        flex-direction: column;
+        flex: 1;
+        max-width: 800px;
+        padding: 20px;
+        border: 1px solid #808080;
+        background-color: #000;
+    }
+
+    .list-tweets-section {
+        background-color: #444;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .list-tweet-container {
+        background-color: #333;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        margin-bottom: 20px;
+    }
+
+    .list-tweet-container:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+    }
+
+    .list-tweet-profile-img {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 15px;
+    }
+
+    .list-tweet-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .list-username a {
+        font-size: 18px;
+        color: white;
+        text-decoration: none;
+    }
+
+    .list-username a:hover {
+        text-decoration: none;
+    }
+
+    .list-text-muted {
+        color: #999 !important;
+    }
+
+    .list-tweet-content {
+        margin-top: 5px;
+    }
+
+    .list-text-center {
+        text-align: center;
+    }
+
+    .list-tweet-actions {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+    }
+    
+    .list-tweet-actions i {
+        cursor: pointer;
+        color: #aaa;
+    }
+    
+    .list-tweet-actions i.list-liked {
+        color: red;
+    }
+    
+    .list-tweet-actions i:hover {
+        color: white;
+    }
+
+    .list-search-container {
+        display: flex;
+        justify-content: center; /* Center horizontally */
+        margin-bottom: 1rem;
+        width: 100%; /* Ensure the container takes full width */
+    }
+
+    .list-search-bar {
+        width: 100%; /* Ensure the search bar takes full width of its parent */
+        max-width: 500px; /* Limit the width of the search bar */
+        display: flex;
+        align-items: center;
+    }
+
+    .list-search-input {
+        flex: 1;
+        padding: 0.5rem;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        margin-right: -1px; /* Overlap with the button */
+    }
+
+    .list-search-button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0.5rem;
+    }
+
+    .list-search-icon {
+        width: 16px;
+        height: 16px;
+        color: #007bff; /* Search icon color */
+    }
+/* General Styles */
+body {
+    background-color: black;
+    color: white;
+}
+
+/* Container */
+.explore-container {
+    padding: 2rem;
+    border-radius: 10px;
+}
+
+/* Profile Image */
+.explore-profile-img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-left: -10px;
+    margin-right: 10px;
+}
+
+/* Profile Card */
+.explore-profile-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 2rem;
+    margin-bottom: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    min-height: 150px;
+    background: linear-gradient(135deg, #1a1a2e, #333); /* Gradient background */
+    transition: transform 0.3s ease-in-out; /* Smooth hover effect */
+}
+
+.explore-profile-card:hover {
+    transform: scale(1.02); /* Slight zoom effect on hover */
+}
+
+/* Profile Image Container */
+.explore-profile-img-container {
+    flex-shrink: 0;
+    margin-right: 1rem;
+}
+
+/* Profile Details */
+.explore-profile-details {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+}
+
+/* Profile Card Heading */
+.explore-profile-card h5 {
+    color: white; /* Name color */
+}
+
+/* Follow Button */
+.explore-follow-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 0.8em;
+    color: #007bff;
+    cursor: pointer;
+    border: 1px solid #007bff;
+    border-radius: 20px; /* Rounded edges */
+    background: none;
+    padding: 0.2rem 0.5rem; /* Slim button */
+    transition: background 0.3s ease;
+}
+
+.explore-follow-button:hover {
+    background: #007bff;
+    color: white;
+}
+
+/* Profile Info */
+.explore-profile-info {
+    display: flex;
+    align-items: center;
+}
+
+/* Card Container */
+.explore-card-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* Card Column */
+.explore-card-column {
+    flex: 0 1 calc(33.333% - 20px);
+    margin: 10px;
+}
+
+/* Search Container */
+.explore-search-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+/* Search Bar */
+.explore-search-bar {
+    width: calc(33.333% - 20px); /* Match width of profile cards */
+    display: flex;
+    align-items: center;
+}
+
+/* Search Input */
+.explore-search-input {
+    flex: 1;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-right: -1px;
+}
+
+/* Search Button */
+.explore-search-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+}
+
+/* Search Icon */
+.explore-search-icon {
+    width: 16px;
+    height: 16px;
+    color: #007bff;
+}
+body {
+    background-color: black;
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+.like-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.like-page-title {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.like-tweet-cards-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.like-tweet-card {
+    background: linear-gradient(145deg, #002b5c, #4a4a4a);
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    color: white;
+}
+
+.like-tweet-card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+    transition: all 0.3s ease;
+}
+
+.like-tweet-content {
+    font-size: 1rem;
+    margin: 0;
+}
+
+.like-tweet-meta {
+    font-size: 0.9rem;
+    color: #ccc;
+}
+
+.like-no-tweets {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #aaa;
+}
+/* Basic styling */
+/* Navbar styling */
+.navbar {
+    background: linear-gradient(135deg, #333, #242443); /* Greyish to dark bluish gradient */
+        position: fixed; /* Keep the navbar fixed */
+        top: 0;
+        width: 100%;
+        z-index: 20; /* Ensure it's on top of the main container */
+}
+  
+  .navbar-nav .nav-item .nav-link {
+    display: flex;
+    align-items: center; /* Ensure vertical alignment */
+  }
+  
+  /* Dropdown menu styling */
+  .dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #333;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    opacity: 0;
+    visibility: hidden;
+  }
+  
+  /* Show the dropdown menu on hover */
+  .nav-item:hover .dropdown-menu {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  /* Additional dropdown item styling */
+  .dropdown-item {
+    color: white;
+    text-decoration: none;
+  }
+  
+  .dropdown-item:hover {
+    background-color: #555;
+  }
+  body {
+    background-color: black;
+    color: white;
+}
+
+/* Black background for the main container */
+.listpro-container {
+    background-color: black; /* Solid black background */
+    padding: 2rem; /* Add padding to avoid content touching the edges */
+    border-radius: 10px; /* Optional: rounded corners for the container */
+}
+
+.listpro-profile-img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 15px; /* Space between image and text */
+}
+
+.listpro-profile-card {
+    position: relative; /* Make this card relative for absolute positioning of button */
+    display: flex;
+    padding: 2rem;
+    background: linear-gradient(135deg, #1a1a2e, #333); /* Gradient background for card */
+    border-radius: 10px; /* Rounded corners for the card */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow for card */
+    color: white; /* Text color inside the card */
+    transition: background 0.3s; /* Smooth transition for hover effect */
+}
+
+.listpro-profile-card:hover {
+    background: linear-gradient(135deg, #1a1a2e, #6a0dad); /* Gradient on hover */
+}
+
+.listpro-profile-img-container {
+    flex-shrink: 0;
+}
+
+.listpro-profile-info {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+}
+
+.listpro-profile-details {
+    flex-grow: 1;
+}
+
+.listpro-follow-button {
+    position: absolute; /* Position the button absolutely */
+    top: 10px;
+    right: 10px;
+    font-size: 0.75em;
+    color: #007bff;
+    cursor: pointer;
+    border: 1px solid #007bff;
+    border-radius: 15px; /* Rounded edges for the button */
+    background: none;
+    padding: 0.4rem 1.2rem; /* Slim button with increased width */
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover effect */
+}
+
+.listpro-follow-button:hover {
+    color: white;
+    background-color: #007bff; /* Background color on hover */
+}
+
+.listpro-card-title {
+    font-size: 1.25rem;
+    margin: 0;
+}
+
+.listpro-username {
+    font-size: 0.9rem;
+    color: gray;
+    margin-top: 0.25rem; /* Space between name and username */
+}
+
+.listpro-card-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.listpro-card-column {
+    flex: 0 1 calc(50% - 20px); /* 2 cards per row with space between */
+    margin: 10px;
+}
+body {
+    background-color: black;
+    color: white;
+    margin: 0;
+    padding: 0;
+}
+
+.pro-container {
+    padding: 20px;
+    background-color: #000;
+    width: 1200px; /* Adjust width to match tweet box container */
+    margin: 0 auto; /* Center the container horizontally */
+}
+
+.pro-inner-container {
+    background-color: #111; /* Slightly different background to distinguish from outer container */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.pro-profile-img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 15px;
+}
+
+.pro-profile-header {
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center items horizontally */
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.pro-profile-name {
+    font-size: 2rem;
+    margin: 10px 0 0 0; /* Add top margin to create space below the image */
+}
+
+.pro-profile-username {
+    font-size: 1rem;
+    color: #aaa;
+}
+
+.pro-profile-container {
+    background-color: #222;
+    padding: 20px;
+    border-radius: 10px;
+    color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.pro-membership {
+    margin-top: 20px;
+    font-weight: bold;
+    color: gold;
+}
+
+.pro-renew-btn {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 5px 15px;
+    color: #333;
+    background-color: #fff;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.pro-social-icons {
+    margin-top: 20px;
+}
+
+.pro-social-icons a {
+    color: white;
+    margin: 0 10px;
+    text-decoration: none;
+}
+
+.pro-social-icons i {
+    font-size: 1.5rem;
+}
+.custom-body {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(0, 123, 255, 0.3)); /* Gradient background */
+    color: white;
+    margin: 0;
+    padding: 0;
+    height: 100vh; /* Ensure the body takes up full viewport height */
+    overflow-y: auto; /* Enable vertical scrolling if needed */
+    font-family: Arial, sans-serif; /* Set the default font */
+}
+
+.main-container {
+    position: sticky;
+    display: flex;
+    justify-content: center; /* Centers Bcontainer horizontally */
+    padding: 20px;
+    background: linear-gradient(135deg,  rgba(20, 18, 26, 0.8),rgb(27, 34, 46));
+    border-radius: 0px; /* Optional: rounded corners */
+}
+
+.Bcontainer {
+    display: flex;
+    align-items: flex-start; /* Align profile and tweet containers to the top */
+    gap: 20px; /* Adds space between profile and tweet containers */
+    max-width: 1200px; /* Set a max-width for Bcontainer */
+    width: 100%;
+}
+
+    .hcontainer {
+        position: sticky;
+        top: 20px;
+        width: 250px;
+        background-color: #222;
+        padding: 20px;
+        border-radius: 10px;
+        color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        text-align: left; /* Align all text and links to the left */
+    }
+    
+    .hcontainer .nav-links {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start; /* Align the links to the left */
+        gap: 15px;
+        margin-top: 20px;
+    }
+    
+    .hcontainer .nav-link {
+        color: white;
+        font-size: 18px;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start; /* Align icon and text to the left */
+    }
+    
+    .hcontainer .nav-link i {
+        margin-left: 10px; /* Space between text and icon */
+    }
+    
+    .hcontainer .nav-link:hover {
+        text-decoration: underline;
+    }
+    
+    .hcontainer .membership {
+        margin-top: 20px; /* Space above membership status */
+        font-weight: bold;
+        color: gold; /* Highlight membership status */
+    }
+    
+    .hcontainer .renew-btn {
+        display: block; /* Make the button a block-level element */
+        margin: 20px auto 10px auto; /* Center the button horizontally and add spacing */
+        padding: 5px 15px; /* Padding for the button */
+        color: #333; /* Darker text color */
+        background-color: #fff; /* White background for contrast */
+        border-radius: 5px; /* Rounded button */
+        text-decoration: none; /* Remove underline from link */
+        text-align: center; /* Center the text inside the button */
+    }
+    
+    .hcontainer .social-icons {
+        display: flex;
+        justify-content: center; /* Center the icons horizontally */
+        margin-top: 20px; /* Space above social icons */
+    }
+    
+    .hcontainer .social-icons a {
+        color: white; /* White icon color */
+        margin: 0 10px; /* Spacing between icons */
+        text-decoration: none; /* Remove underline from icons */
+    }
+    
+    .profile-container {
+        position: sticky;
+        top: 20px; /* Adjust the value to control the distance from the top */
+        width: 250px; /* Fixed width for the profile container */
+        background-color: #222;
+        padding: 20px;
+        border-radius: 10px;
+        color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        text-align: center;
+    }
+    
+    .profile-container img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-bottom: 15px;
+    }
+    
+    .profile-container h2 {
+        margin: 10px 0;
+    }
+    
+    .profile-container p {
+        font-size: 14px;
+        margin-bottom: 5px;
+    }
+    
+    .profile-container .membership {
+        margin-top: 20px;
+        font-weight: bold;
+        color: gold;
+    }
+    
+    .profile-container .renew-btn {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 5px 15px;
+        color: #333;
+        background-color: #fff;
+        border-radius: 5px;
+        text-decoration: none;
+    }
+    
+    .profile-container .social-icons {
+        margin-top: 20px;
+    }
+    
+    .profile-container .social-icons a {
+        color: white;
+        margin: 0 10px;
+        text-decoration: none;
+    }
+    
+    .container {
+        flex: 1; /* Take up the remaining space */
+        padding: 20px;
+        background-color: #000;
+    }
+    
+    .tweets-section {
+        background-color: #444;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    
+    .tweet-container {
+        position: relative; /* Make this container the reference point for absolute positioning */
+        background-color: #333;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        margin-bottom: 20px;
+        width: 100%;
+    }
+    
+    .edit-icon {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        color: white; /* Adjust color as needed */
+        cursor: pointer;
+    }
+    
+    .tweet-container:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+    }
+    
+    .tweet-profile-img {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 15px;
+    }
+    
+    .tweet-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    
+    .username a {
+        font-size: 18px;
+        color: white;
+        text-decoration: none;
+    }
+    
+    .username a:hover {
+        text-decoration: none;
+    }
+    
+    .tweet-content {
+        margin-top: 5px;
+    }
+    
+    .text-muted {
+        color: #999 !important;
+    }
+    
+    .form-container {
+        background-color: #444;
+        padding: 20px;
+        border-radius: 10px;
+    }
+    
+    .form-container form {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .form-container button {
+        align-self: center;
+        background: linear-gradient(90deg, rgba(0, 123, 255, 1) 0%, rgba(0, 123, 255, 0.8) 100%);
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    
+    .form-container button:hover {
+        background: linear-gradient(90deg, rgba(0, 123, 255, 0.8) 0%, rgba(0, 123, 255, 1) 100%);
+    }
+    
+    .tweet-actions {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+    }
+    
+    .tweet-actions i {
+        cursor: pointer;
+        color: #aaa;
+    }
+    
+    .tweet-actions i.liked {
+        color: red;
+    }
+    
+    .tweet-actions i:hover {
+        color: white;
+    }
+    
+    .profile-name-link {
+        color: white; /* Set the text color */
+        text-decoration: none; /* Remove the underline */
+    }
+    
+    .profile-name-link:hover {
+        text-decoration: none; /* Ensure no underline on hover */
+    }
+    
+    .pagination {
+        text-align: center;
+        margin-top: 20px;
+    }
+    
+    .pagination a {
+        color: white;
+        text-decoration: none;
+        padding: 5px 10px;
+    }
+    
+    .pagination a:hover {
+        text-decoration: underline;
+    }
+    
+    .pagination .current {
+        padding: 5px 10px;
+        background-color: #444;
+        border-radius: 5px;
+    }
+    
+    .box {
+        text-align: center;
+    }
+    
+    .button {
+        font-size: 1em;
+        padding: 15px 35px;
+        color: #fff;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.3s ease-out;
+        background-color: #4CAF50;
+        border-radius: 50px;
+    }
+    
+    .overlay {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: rgba(0,0,0,0.8);
+        transition: opacity 500ms;
+        visibility: hidden;
+        opacity: 0;
+        z-index: 1000; /* Ensures the overlay is in front */
+    }
+    
+    .overlay:target {
+        visibility: visible;
+        opacity: 1;
+    }
+    
+    .wrapper {
+        margin: 0 auto;
+        width: 90%;
+        max-width: 500px;
+        background: white;
+        border-radius: 10px;
+        position: relative;
+        padding: 20px;
+    }
+    
+    .wrapper h2 {
+        margin: 0;
+    }
+    
+    .wrapper p {
+        margin: 0;
+        color: #555;
+    }
+    
+    .wrapper .close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        color: #aaa;
+        cursor: pointer;
+    }
+    
+    .wrapper .close:hover {
+        color: #000;
+    }
+    
+    
+    .wrapper .content {
+        max-height: 30%;
+        overflow: auto;
+    }
+    .pop-container {
+        border-radius: 5px;
+        background-color: #e7e7e7;
+        padding: 20px 0;
+    }
+    /* Center the button within its container */
+    .btn btn-dark {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%; /* Adjust based on your layout */
+    }
+    
+    /* Style for the button */
+    .dark-blue-btn {
+        background: linear-gradient(135deg, #1a1aff, #4b4b4b); /* Gradient from blue to dark greyish */
+        color: white; /* White text color */
+        border: none; /* Remove any default border */
+        border-radius: 50px; /* Fully rounded edges */
+        padding: 10px 20px; /* Padding for the button */
+        cursor: pointer; /* Change cursor to pointer */
+        transition: background 0.3s ease, transform 0.3s ease; /* Smooth transition */
+    }
+    
+    .dark-blue-btn:hover {
+        background: linear-gradient(135deg, #0000cc, #333333); /* Darker gradient on hover */
+        transform: scale(1.05); /* Slightly increase button size */
+    }
+    .btn-container{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+    }

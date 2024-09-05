@@ -1,98 +1,13 @@
 {% extends "base.html" %}
 {% load static %}
+{% block title %}Profile{% endblock %}
+
 {% block content %}
-<style>
-    body {
-        background-color: black;
-        color: white;
-        margin: 0;
-        padding: 0;
-    }
 
-    .container {
-        padding: 20px;
-        background-color: #000;
-        width: 1200px; /* Adjust width to match tweet box container */
-        margin: 0 auto; /* Center the container horizontally */
-    }
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
 
-    .inner-container {
-        background-color: #111; /* Slightly different background to distinguish from outer container */
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-
-    .profile-img {
-        width: 100px;
-        height: 100px;
-        border-radius: 50%;
-        object-fit: cover;
-        margin-bottom: 15px;
-    }
-
-    .profile-header {
-        display: flex;
-        flex-direction: column; /* Stack items vertically */
-        align-items: center; /* Center items horizontally */
-        margin-bottom: 20px;
-        text-align: center;
-    }
-
-    .profile-name {
-        font-size: 2rem;
-        margin: 10px 0 0 0; /* Add top margin to create space below the image */
-    }
-
-    .profile-username {
-        font-size: 1rem;
-        color: #aaa;
-    }
-
-    .profile-container {
-        background-color: #222;
-        padding: 20px;
-        border-radius: 10px;
-        color: #fff;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        text-align: center;
-        width: 100%;
-        margin: 0 auto;
-    }
-
-    .membership {
-        margin-top: 20px;
-        font-weight: bold;
-        color: gold;
-    }
-
-    .renew-btn {
-        display: inline-block;
-        margin-top: 10px;
-        padding: 5px 15px;
-        color: #333;
-        background-color: #fff;
-        border-radius: 5px;
-        text-decoration: none;
-    }
-
-    .social-icons {
-        margin-top: 20px;
-    }
-
-    .social-icons a {
-        color: white;
-        margin: 0 10px;
-        text-decoration: none;
-    }
-
-    .social-icons i {
-        font-size: 1.5rem;
-    }
-</style>
-
-<div class="container">
-    <div class="inner-container">
+<div class="pro-container">
+    <div class="pro-inner-container">
         <div class="d-flex justify-content-center mb-3">
             <a href="{% url 'edit_profile' %}" class="btn btn-primary me-2">Edit Profile</a>
             <a href="{% url 'following_list' %}" class="btn btn-secondary me-2">Following</a>
@@ -100,16 +15,16 @@
         </div>
 
         {% if user.profile %}
-            <div class="profile-container">
-                <div class="profile-header">
+            <div class="pro-profile-container">
+                <div class="pro-profile-header">
                     {% if user.profile.profile_picture %}
-                        <img src="{{ user.profile.profile_picture.url }}" alt="{{ user.username }}'s profile picture" class="profile-img">
+                        <img src="{{ user.profile.profile_picture.url }}" alt="{{ user.username }}'s profile picture" class="pro-profile-img">
                     {% else %}
-                        <img src="{% static 'images/default_profile_picture.jpg' %}" alt="Default profile picture" class="profile-img">
+                        <img src="{% static 'images/default_profile_picture.jpg' %}" alt="Default profile picture" class="pro-profile-img">
                     {% endif %}
                     <div>
-                        <h2 class="profile-name">{{ user.profile.first_name }} {{ user.profile.last_name }}</h2>
-                        <span class="profile-username">@{{ user.username }}</span>
+                        <h2 class="pro-profile-name">{{ user.profile.first_name }} {{ user.profile.last_name }}</h2>
+                        <span class="pro-profile-username">@{{ user.username }}</span>
                     </div>
                 </div>
                 <p><i class="fas fa-envelope"></i> Email: {{ user.email }}</p>
@@ -118,9 +33,9 @@
                     <p><i class="fas fa-map-marker-alt"></i> Location: {{ user.profile.location }}</p>
                 {% endif %}
                 <p><i class="fas fa-calendar"></i> Date of Birth: {{ user.profile.date_of_birth }}</p>
-                <p class="membership"><i class="fas fa-star"></i> {{ user.profile.membership }}</p>
-                <a href="{% url 'edit_profile' %}" class="renew-btn">Renew</a>
-                <div class="social-icons">
+                <p class="pro-membership"><i class="fas fa-star"></i> {{ user.profile.membership }}</p>
+                <a href="{% url 'edit_profile' %}" class="pro-renew-btn">Renew</a>
+                <div class="pro-social-icons">
                     {% for social in user.profile.social_links.all %}
                         <a href="{{ social.url }}"><i class="fab fa-{{ social.platform }}"></i></a>
                     {% endfor %}

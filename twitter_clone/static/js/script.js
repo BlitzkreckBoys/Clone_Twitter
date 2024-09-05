@@ -21,7 +21,6 @@ document.addEventListener('DOMContentLoaded', function () {
         // Add click event listener to toggle like
         button.addEventListener('click', function () {
             const tweetId = this.getAttribute('data-tweet-id');
-            const isLiked = this.getAttribute('data-liked') === 'true';
             const likeCountElement = document.getElementById(`like-count-${tweetId}`);
             const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
@@ -38,7 +37,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 updateLikeButton(this, data.liked);
                 likeCountElement.textContent = data.likes_count;
                 this.setAttribute('data-liked', data.liked);
-            });
+            })
+            .catch(error => console.error('Error:', error)); // Added error handling
         });
     });
 
@@ -46,12 +46,14 @@ document.addEventListener('DOMContentLoaded', function () {
     const tweetContainers = document.querySelectorAll('.tweet-container');
     tweetContainers.forEach(container => {
         container.addEventListener('dblclick', function () {
-            const likeButton = this.querySelector('.fa-heart');
+            const likeButton = this.querySelector('.tweet-actions .fa-heart');
+            if (!likeButton) return; // Ensure the likeButton exists
+            
             const tweetId = likeButton.getAttribute('data-tweet-id');
             const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
             const likeCountElement = document.getElementById(`like-count-${tweetId}`);
-            
-            // If the tweet is not already liked
+
+            // Check if the like button is not already in a liked state
             if (likeButton.getAttribute('data-liked') === 'false') {
                 fetch(`/like_tweet/${tweetId}/`, {
                     method: 'POST',
@@ -66,17 +68,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     updateLikeButton(likeButton, data.liked);
                     likeCountElement.textContent = data.likes_count;
                     likeButton.setAttribute('data-liked', data.liked);
-                });
+                })
+                .catch(error => console.error('Error:', error)); // Added error handling
             }
         });
     });
 });
-// const dialog = document.getElementById("tweet-dialog");
-
-//         function showTweetDialog() {
-//             dialog.showModal(); // Show the dialog
-//         }
-
-//         function closeTweetDialog() {
-//             dialog.close(); // Close the dialog
-//         }

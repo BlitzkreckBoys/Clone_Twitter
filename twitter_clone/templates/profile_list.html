@@ -1,112 +1,23 @@
 {% extends "base.html" %}
 {% load static %}
+{% block title %}Profiles Listing{% endblock %}
+
 {% block content %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
 
-<style>
-    body {
-        background-color: black;
-        color: white;
-    }
-    
-    /* Black background for the main container */
-    .container {
-        background-color: black; /* Solid black background */
-        padding: 2rem; /* Add padding to avoid content touching the edges */
-        border-radius: 10px; /* Optional: rounded corners for the container */
-    }
-    
-    .profile-img {
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        object-fit: cover;
-        margin-right: 15px; /* Space between image and text */
-    }
-    
-    .profile-card {
-        position: relative; /* Make this card relative for absolute positioning of button */
-        display: flex;
-        padding: 2rem;
-        background: linear-gradient(135deg, #1a1a2e, #333); /* Gradient background for card */
-        border-radius: 10px; /* Rounded corners for the card */
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow for card */
-        color: white; /* Text color inside the card */
-        transition: background 0.3s; /* Smooth transition for hover effect */
-    }
-    
-    .profile-card:hover {
-        background: linear-gradient(135deg, #1a1a2e, #6a0dad); /* Gradient on hover */
-    }
-    
-    .profile-img-container {
-        flex-shrink: 0;
-    }
-    
-    .profile-info {
-        display: flex;
-        align-items: center;
-        flex-grow: 1;
-    }
-    
-    .profile-details {
-        flex-grow: 1;
-    }
-    
-    .follow-button {
-        position: absolute; /* Position the button absolutely */
-        top: 10px;
-        right: 10px;
-        font-size: 0.75em;
-        color: #007bff;
-        cursor: pointer;
-        border: 1px solid #007bff;
-        border-radius: 15px; /* Rounded edges for the button */
-        background: none;
-        padding: 0.4rem 1.2rem; /* Slim button with increased width */
-        transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover effect */
-    }
-    
-    .follow-button:hover {
-        color: white;
-        background-color: #007bff; /* Background color on hover */
-    }
-    
-    .card-title {
-        font-size: 1.25rem;
-        margin: 0;
-    }
-    
-    .username {
-        font-size: 0.9rem;
-        color: gray;
-        margin-top: 0.25rem; /* Space between name and username */
-    }
-    
-    .card-container {
-        display: flex;
-        justify-content: center;
-        flex-wrap: wrap;
-    }
-
-    .card-column {
-        flex: 0 1 calc(50% - 20px); /* 2 cards per row with space between */
-        margin: 10px;
-    }
-</style>
-
-<div class="container">
-    <h1 class="text-center mb-4">{{ title }}</h1>
+ <div class="listpro-container">
+    <h1 class="listpro-page-title">{{ title }}</h1>
 
     {% if users %}
-        <div class="card-container">
+        <div class="listpro-card-container">
             {% for profile in users %}
-            <div class="card-column">
-                <div class="card profile-card">
+            <div class="listpro-card-column">
+                <div class="listpro-profile-card">
                     {% if user.is_authenticated %}
                         <form method="post" action="{% url 'follow_profile' profile.pk %}">
                             {% csrf_token %}
                             <input type="hidden" name="follow" value="{% if profile in user.profile.follows.all %}unfollow{% else %}follow{% endif %}">
-                            <button type="submit" class="follow-button">
+                            <button type="submit" class="listpro-follow-button">
                                 {% if profile in user.profile.follows.all %}
                                     - Unfollow
                                 {% else %}
@@ -117,21 +28,21 @@
                     {% else %}
                         <p><a href="{% url 'login' %}" style="color: white;">Login to follow users</a></p>
                     {% endif %}
-                    <div class="profile-info">
-                        <div class="profile-img-container">
+                    <div class="listpro-profile-info">
+                        <div class="listpro-profile-img-container">
                             {% if profile.profile_picture %}
-                                <img src="{{ profile.profile_picture.url }}" alt="{{ profile.user.username }}'s profile picture" class="profile-img">
+                                <img src="{{ profile.profile_picture.url }}" alt="{{ profile.user.username }}'s profile picture" class="listpro-profile-img">
                             {% else %}
-                                <img src="{% static 'images/default_profile_picture.jpg' %}" alt="Default profile picture" class="profile-img">
+                                <img src="{% static 'images/default_profile_picture.jpg' %}" alt="Default profile picture" class="listpro-profile-img">
                             {% endif %}
                         </div>
-                        <div class="profile-details">
-                            <h5 class="card-title">
+                        <div class="listpro-profile-details">
+                            <h5 class="listpro-card-title">
                                 <a href="{% url 'profile' profile.user.id %}" style="text-decoration: none; color: inherit;">
                                     {{ profile.first_name }} {{ profile.last_name }}
                                 </a>
                             </h5>
-                            <p class="username">@{{ profile.user.username }}</p>
+                            <p class="listpro-username">@{{ profile.user.username }}</p>
                         </div>
                     </div>
                 </div>
@@ -139,8 +50,7 @@
             {% endfor %}
         </div>
     {% else %}
-        <p class="text-center">No users to display.</p>
+        <p class="no-users">No users to display.</p>
     {% endif %}
 </div>
-
-{% endblock %}
+{% endblock%}

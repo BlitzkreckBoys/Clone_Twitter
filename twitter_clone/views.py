@@ -165,7 +165,35 @@ class FollowingTweetsView(ListView):
 
         return tweets
 
-    
+
+class LikeTweetView(View):
+    def post(self, request, tweet_id):
+        tweet = get_object_or_404(Tweet, id=tweet_id)
+        if request.user.is_authenticated:
+            tweet.likes.add(request.user)
+            liked = True
+        else:
+            return JsonResponse({'success': False, 'error': 'User not authenticated'}, status=403)
+        
+        return JsonResponse({
+            'success': True,
+            'like_count': tweet.likes.count(),
+            'liked': liked
+        })
+
+    def delete(self, request, tweet_id):
+        tweet = get_object_or_404(Tweet, id=tweet_id)
+        if request.user.is_authenticated:
+            tweet.likes.remove(request.user)
+            liked = False
+        else:
+            return JsonResponse({'success': False, 'error': 'User not authenticated'}, status=403)
+        
+        return JsonResponse({
+            'success': True,
+            'like_count': tweet.likes.count(),
+            'liked': liked
+        }) 
 class LikeTweetView(View):
     """Like or unlike a tweet"""
     def post(self, request, tweet_id):

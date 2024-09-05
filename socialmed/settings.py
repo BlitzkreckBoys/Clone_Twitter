@@ -104,7 +104,7 @@ USE_TZ = True
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'twitter1',
+        'NAME': 'twittercln',
         'USER': 'postgres',
         'PASSWORD': '1415926535',
         'HOST': 'localhost',
